@@ -1,16 +1,11 @@
 package core;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class Action {
 
 	private String verb;
 	private List<String> parameters = new ArrayList<String>();
-	private Properties queryParams;
-
-	private Action(){
-	}
 	
 	public static Action create(String path){
 		Action action = new Action();
@@ -38,7 +33,4 @@ public class Action {
 		this.verb = verb;
 	}
 
-	public Properties getQueryParams(){
-		return this.queryParams;
-	}
 }

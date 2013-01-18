@@ -28,7 +28,7 @@ public class Connection {
 		initializeHardware();
 	}
 	
-	public synchronized static Connection getInstancxe(){
+	public synchronized static Connection getInstance(){
 		if(instance == null){
 			instance = new Connection();
 		}

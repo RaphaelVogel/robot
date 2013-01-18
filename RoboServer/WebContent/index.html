@@ -2,9 +2,97 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Robi</title>
+<link href="jquery-ui-1.9.2.css" rel="stylesheet">
+<script src="jquery-1.8.3.js"></script>
+<script src="jquery-ui-1.9.2.js"></script>
+<script>
+	$(function() {
+		$( "#move" ).buttonset();
+
+		$("#forward").click(function(){
+			sendDriveRequest("forward",3);
+		});
+		$("#forwardLeft").click(function(){
+			sendDriveRequest("forwardLeft",3);
+		});
+		$("#forwardRight").click(function(){
+			sendDriveRequest("forwardRight",3);
+		});
+		$("#turnLeft").click(function(){
+			sendDriveRequest("turnLeft",3);
+		});
+		$("#turnRight").click(function(){
+			sendDriveRequest("turnRight",3);
+		});
+		$("#backward").click(function(){
+			sendDriveRequest("backward",3);
+		});
+		$("#backwardLeft").click(function(){
+			sendDriveRequest("backwardLeft",3);
+		});
+		$("#backwardRight").click(function(){
+			sendDriveRequest("backwardRight",3);
+		});
+		$("#stop").click(function(){
+			sendDriveRequest("forward",0);
+		});
+		
+		window.setInterval(function(){
+			$.ajax({
+				  url: "/Status",
+				  beforeSend: function(xhr) {
+					    xhr.setRequestHeader("authorization", "Basic ZDAyNjgxMjpsZXV0ejQ1");
+				  },
+				  success: function(message){
+					  $("#status").val(message);
+				  },
+				  error: function(jqXHR, textStatus, errorThrown){
+					  $("#status").css("color", "red");
+					  $("#status").val(errorThrown + ": "+ jqXHR.responseText);
+				  }
+			});
+		}, 5000);
+		
+		function sendDriveRequest(direction, speed){
+			$.ajax({
+				  url: "/Drive/"+direction+"/"+speed,
+				  beforeSend: function(xhr) {
+					    xhr.setRequestHeader("authorization", "Basic ZDAyNjgxMjpsZXV0ejQ1");
+				  },
+				  success: function(message){
+					  $("#messages").val(message);
+				  },
+				  error: function(jqXHR, textStatus, errorThrown){
+					  $("#messages").css("color", "red");
+					  $("#messages").val(errorThrown + ": "+ jqXHR.responseText);
+				  }
+				});
+		}
+	});
+</script>
 </head>
 <body>
-Index ff
+	<form>
+	<div id="move">
+		<input type="radio" id="forwardLeft" name="radio" /><label for="forwardLeft">Halb Links</label>
+		<input type="radio" id="forward" name="radio" /><label for="forward">&nbsp;&nbsp;Vorwärts&nbsp;&nbsp;</label>
+		<input type="radio" id="forwardRight" name="radio" /><label for="forwardRight">Halb Rechts</label><br><br>
+		
+		<input type="radio" id="turnLeft" name="radio" /><label for="turnLeft">Links Drehen</label>
+		<input type="radio" id="stop" name="radio" checked="checked" /><label for="stop">&nbsp;Stop&nbsp;</label>
+		<input type="radio" id="turnRight" name="radio" /><label for="turnRight">Rechts Drehen</label><br><br>
+		
+		<input type="radio" id="backwardLeft" name="radio" /><label for="backwardLeft">Halb Links</label>
+		<input type="radio" id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label>
+		<input type="radio" id="backwardRight" name="radio" /><label for="backwardRight">Halb Rechts</label><br><br>
+	</div>
+	<div>
+		<input id="status" type="text" size="77" readonly="readonly">
+	</div>
+	<div>
+		<input id="messages" type="text" size="77" readonly="readonly">
+	</div>
+	</form>
 </body>
 </html>

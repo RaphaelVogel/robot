@@ -1,6 +1,7 @@
 package core;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,8 @@ public class Dispatcher extends HttpServlet {
 			if(handler == null){
 				@SuppressWarnings("unchecked")
 				Class<Handler> clazz = (Class<Handler>) Class.forName("handler."+action.getVerb()+"Handler");
-				handler = clazz.newInstance();
+				Constructor<Handler> constr = clazz.getDeclaredConstructor();
+				handler = constr.newInstance();
 				handlers.put(action.getVerb(), handler);
 			}	
 			handler.serve(action, request, response);

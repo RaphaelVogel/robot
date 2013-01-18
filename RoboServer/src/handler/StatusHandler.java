@@ -12,7 +12,7 @@ import core.Handler;
 
 public class StatusHandler extends Handler{
 
-	private BrickMaster masterBrick = Connection.getInstancxe().getMasterBrick();
+	private BrickMaster masterBrick = Connection.getInstance().getMasterBrick();
 
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		int voltage;

@@ -20,7 +20,7 @@ public class DriveHandler extends Handler{
 	
 	private final short SPEED_FACTOR = 900;
 	
-	private BrickServo servoBrick = Connection.getInstancxe().getServoBrick();
+	private BrickServo servoBrick = Connection.getInstance().getServoBrick();
 	
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /Drive/<direction>/<speed>

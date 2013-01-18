@@ -15,7 +15,7 @@ public class CameraHandler extends Handler {
 	private short servo2 = (short)2;
 	private short servo3 = (short)3;
 	
-	private BrickServo servoBrick = Connection.getInstancxe().getServoBrick();
+	private BrickServo servoBrick = Connection.getInstance().getServoBrick();
 
 	@Override
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
