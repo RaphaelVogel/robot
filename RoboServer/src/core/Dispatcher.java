@@ -27,7 +27,9 @@ public class Dispatcher extends HttpServlet {
 			}	
 			handler.serve(action, request, response);
 		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not find handler");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().println("Could not find handler");
+			return;
 		}
 	}
 
