@@ -2,6 +2,7 @@ package core;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class Dispatcher extends HttpServlet {
 			handler.serve(action, request, response);
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			response.getWriter().println("Could not find handler");
+			response.getWriter().println("Could not initialize system");
 			return;
 		}
 	}

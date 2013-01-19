@@ -1,4 +1,6 @@
 package handler;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -40,8 +42,14 @@ public class DriveHandler extends Handler{
 		try {
 			Method method = this.getClass().getDeclaredMethod(direction);
 			resultString = method.invoke(this);
-		} catch (Exception e) {
+		} catch (NoSuchMethodException e) {
 			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Direction " + direction + " does not exist", response);
+			return;
+		} catch (IllegalAccessException e) {
+			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not call method "+direction, response);
+			return;
+		} catch (InvocationTargetException e) {
+			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not call method "+direction, response);
 			return;
 		}
 		sendResponse(HttpServletResponse.SC_OK, (String)resultString, response);
