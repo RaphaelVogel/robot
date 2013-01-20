@@ -18,7 +18,7 @@ public class DriveHandler extends Handler{
 	private short servo0 = (short)0;
 	private short servo1 = (short)1;
 	
-	private final short SPEED_FACTOR = 900;
+	private final static short SPEED_FACTOR = 900;
 	
 	private BrickServo servoBrick = Connection.getInstance().getServoBrick();
 	
