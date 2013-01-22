@@ -19,11 +19,16 @@ public class CameraHandler extends Handler {
 	private short servo2And3 = (short)((1 << 2) | (1 << 3) | (1 << 7));
 	
 	private BrickServo servoBrick = Connection.getInstance().getServoBrick();
-	private final static short CAMERA_MAX_POSITION = 20000;
+	private final static short CAMERA_MAX_POSITION = 20000; //RS-2 servo has 200 degree rotation range
+	private final static short DIRECTION_INCREMENT = 2500; // Camera moves 2500 units by each call
+	
+	private short currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
+	private short currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
+	
 
 	public CameraHandler(){
-		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION); // RS servo has 200¡ rotation range
-		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION); // RS servo has 200¡ rotation range
+		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION);
+		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION);
 	}
 	
 	@Override
@@ -49,13 +54,19 @@ public class CameraHandler extends Handler {
 	
 	@SuppressWarnings("unused")
 	private String left(){
-		servoBrick.setPosition(servo2, CAMERA_MAX_POSITION);
+		if(currentLeftRightCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
+			return "Camera cannot move further left";
+		}
+		currentLeftRightCameraPosition += DIRECTION_INCREMENT;
+		servoBrick.setPosition(servo2, currentLeftRightCameraPosition);
         servoBrick.enable(servo2);
 		return "Move camera left";
 	}
 
 	@SuppressWarnings("unused")
 	private String center(){
+		currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
+		currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
 		servoBrick.setPosition(servo2And3, (short)(CAMERA_MAX_POSITION/2));
         servoBrick.enable(servo2And3);
 		return "Center camera";
@@ -63,21 +74,33 @@ public class CameraHandler extends Handler {
 	
 	@SuppressWarnings("unused")
 	private String right(){
-		servoBrick.setPosition(servo2, (short)0);
+		if(currentLeftRightCameraPosition-DIRECTION_INCREMENT < 0){
+			return "Camera cannot move further right";
+		}
+		currentLeftRightCameraPosition -= DIRECTION_INCREMENT;
+		servoBrick.setPosition(servo2, currentLeftRightCameraPosition);
         servoBrick.enable(servo2);
 		return "Move camera right";
 	}
 
 	@SuppressWarnings("unused")
 	private String up(){
-		servoBrick.setPosition(servo3, CAMERA_MAX_POSITION);
+		if(currentUpDownCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
+			return "Camera cannot move further up";
+		}
+		currentUpDownCameraPosition += DIRECTION_INCREMENT;
+		servoBrick.setPosition(servo3, currentUpDownCameraPosition);
         servoBrick.enable(servo3);
 		return "Move camera up";
 	}
 	
 	@SuppressWarnings("unused")
 	private String down(){
-		servoBrick.setPosition(servo3, (short)0);
+		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < 0){
+			return "Camera cannot move further down";
+		}
+		currentUpDownCameraPosition -= DIRECTION_INCREMENT;
+		servoBrick.setPosition(servo3, currentUpDownCameraPosition);
         servoBrick.enable(servo3);
 		return "Move camera down";
 	}
