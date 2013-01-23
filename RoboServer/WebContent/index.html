@@ -7,8 +7,39 @@
 	<link href="css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
 	<script src="js/jquery-1.9.0.js"></script>
 	<script src="js/jquery-ui-1.10.0.custom.js"></script>
-  
-<script>
+
+	<style type="text/css">
+	div.wrapper{
+	    width: 630px;
+	}
+
+	div.my_header{
+	    padding: 10px;
+	    width: 610px;
+	    height: 100px;
+	    overflow: hidden;
+	}
+
+	div.left_box{
+	    float: left;
+	    padding: 5px;
+	    width: 290px;
+	}
+	
+	div.right_box{
+	    float: right;
+	    padding: 5px;
+	    width: 290px;
+	}
+	
+	div.footer{
+	    clear:both;
+	    padding: 5px;
+	    width: 610px;
+	}
+	</style>
+
+	<script>
 	$(function() {
 		$( "#move" ).buttonset();
 
@@ -84,30 +115,55 @@
 		// initially force robot to stop
 		sendDriveRequest("forward", 0);
 		// initialize camera to center position
+		
+		document.body.style.fontSize = '1.1em';
 	});
-</script>
+	</script>
 </head>
 <body>
-	<form>
-	<div id="move">
-		<input type="radio" id="forwardLeft" name="radio" /><label for="forwardLeft">Halb Links</label>
-		<input type="radio" id="forward" name="radio" /><label for="forward">&nbsp;&nbsp;Vorwärts&nbsp;&nbsp;</label>
-		<input type="radio" id="forwardRight" name="radio" /><label for="forwardRight">Halb Rechts</label><br><br>
-		
-		<input type="radio" id="turnLeft" name="radio" /><label for="turnLeft">Links Drehen</label>
-		<input type="radio" id="stop" name="radio" checked="checked" /><label for="stop">&nbsp;Stop&nbsp;</label>
-		<input type="radio" id="turnRight" name="radio" /><label for="turnRight">Rechts Drehen</label><br><br>
-		
-		<input type="radio" id="backwardLeft" name="radio" /><label for="backwardLeft">Halb Links</label>
-		<input type="radio" id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label>
-		<input type="radio" id="backwardRight" name="radio" /><label for="backwardRight">Halb Rechts</label><br><br>
+
+<div class="wrapper">
+	<div class="header">
+	       Here comes the video screen
 	</div>
-	<div>
-		<input id="status" type="text" size="77" readonly="readonly">
-	</div>
-	<div>
-		<input id="messages" type="text" size="77" readonly="readonly">
-	</div>
-	</form>
+
+    <div class="left_box">
+		<p><b>Fahrbefehle</b></p>
+		<form>
+			<div id="move">
+				<input type="radio" id="forwardLeft" name="radio"/><label for="forwardLeft">Halb Links</label><span style="padding-left : 1.2em"></span>
+				<input type="radio" id="forward" name="radio" /><label for="forward">&nbsp;&nbsp;Vorwärts&nbsp;&nbsp;</label><span style="padding-left : 1.2em"></span>
+				<input type="radio" id="forwardRight" name="radio" /><label for="forwardRight">Halb Rechts</label><br><br>
+				
+				<input type="radio" id="turnLeft" name="radio" /><label for="turnLeft">Links Drehen</label><span style="padding-left : 1.2em"></span>
+				<input type="radio" id="stop" name="radio" checked="checked" /><label for="stop">&nbsp;Stop&nbsp;</label><span style="padding-left : 1.2em"></span>
+				<input type="radio" id="turnRight" name="radio" /><label for="turnRight">Rechts Drehen</label><br><br>
+				
+				<input type="radio" id="backwardLeft" name="radio" /><label for="backwardLeft">Halb Links</label><span style="padding-left : 1.2em"></span>
+				<input type="radio" id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label><span style="padding-left : 1.2em"></span>
+				<input type="radio" id="backwardRight" name="radio" /><label for="backwardRight">Halb Rechts</label><br><br>
+			</div>
+		</form>
+    </div>
+
+    <div class="right_box">
+	    <p><b>Kamerasteuerung</b></p>
+		<button id="cam_up">Auf</button><br>
+		<button id="cam_left">Links</button>
+		<button id="cam_right">Rechts</button><br>
+		<button id="cam_down">Ab</button>
+    </div>
+    
+    <div class="footer">
+	    <p><b>Statusmeldungen</b></p>
+	    <div>
+			<input id="status" type="text" size="77" readonly="readonly">
+		</div>
+		<div>
+			<input id="messages" type="text" size="77" readonly="readonly">
+		</div>
+    </div>
+</div>
+
 </body>
 </html>
