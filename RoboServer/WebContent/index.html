@@ -1,39 +1,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Robi</title>
-<link href="js/jquery-ui-1.9.2.css" rel="stylesheet">
-<script src="js/jquery-1.8.3.js"></script>
-<script src="js/jquery-ui-1.9.2.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>RoboServer</title>
+
+	<link href="css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+	<script src="js/jquery-1.9.0.js"></script>
+	<script src="js/jquery-ui-1.10.0.custom.js"></script>
+  
 <script>
 	$(function() {
 		$( "#move" ).buttonset();
 
+		$( "#forward" ).button({icons: {primary: "ui-icon-arrowthick-1-n"}, text: false});
 		$("#forward").click(function(){
 			sendDriveRequest("forward",3);
 		});
+		$( "#forwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-nw"}, text: false});
 		$("#forwardLeft").click(function(){
 			sendDriveRequest("forwardLeft",3);
 		});
+		$( "#forwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-ne"}, text: false});
 		$("#forwardRight").click(function(){
 			sendDriveRequest("forwardRight",3);
 		});
+		$( "#turnLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-w"}, text: false});
 		$("#turnLeft").click(function(){
 			sendDriveRequest("turnLeft",3);
 		});
+		$( "#turnRight" ).button({icons: {primary: "ui-icon-arrowthick-1-e"}, text: false});
 		$("#turnRight").click(function(){
 			sendDriveRequest("turnRight",3);
 		});
+		$( "#backward" ).button({icons: {primary: "ui-icon-arrowthick-1-s"}, text: false});
 		$("#backward").click(function(){
 			sendDriveRequest("backward",3);
 		});
+		$( "#backwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-sw"}, text: false});
 		$("#backwardLeft").click(function(){
 			sendDriveRequest("backwardLeft",3);
 		});
+		$( "#backwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-se"}, text: false});
 		$("#backwardRight").click(function(){
 			sendDriveRequest("backwardRight",3);
 		});
+		$( "#stop" ).button({icons: {primary: "ui-icon-bullet"}, text: false});
 		$("#stop").click(function(){
 			sendDriveRequest("forward",0);
 		});
@@ -71,7 +82,7 @@
 		}
 		
 		// initially force robot to stop
-		sendDriveRequest(forward, 0);
+		sendDriveRequest("forward", 0);
 		// initialize camera to center position
 	});
 </script>

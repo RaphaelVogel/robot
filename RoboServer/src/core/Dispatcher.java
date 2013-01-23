@@ -27,7 +27,7 @@ public class Dispatcher extends HttpServlet {
 			}	
 			handler.serve(action, request, response);
 		} catch (Exception e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			response.getWriter().println("Could not initialize system");
 			return;
 		}
