@@ -83,9 +83,6 @@
 		window.setInterval(function(){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Status",
-				  beforeSend: function(xhr) {
-					    xhr.setRequestHeader("authorization", "Basic ZDAyNjgxMjpsZXV0ejQ1");
-				  },
 				  success: function(message){
 					  $("#status").val(message);
 				  },
@@ -99,9 +96,6 @@
 		function sendDriveRequest(direction, speed){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Drive/"+direction+"/"+speed,
-				  beforeSend: function(xhr) {
-					    xhr.setRequestHeader("authorization", "Basic ZDAyNjgxMjpsZXV0ejQ1");
-				  },
 				  success: function(message){
 					  $("#messages").val(message);
 				  },
