@@ -41,6 +41,10 @@
 
 	<script>
 	$(function() {
+		
+		/*
+		Drive UI
+		*/
 		$( "#move" ).buttonset();
 
 		$( "#forward" ).button({icons: {primary: "ui-icon-arrowthick-1-n"}, text: false});
@@ -80,6 +84,30 @@
 			sendDriveRequest("forward",0);
 		});
 		
+		/*
+		Camera UI
+		*/
+		$( "#cam_up" ).button({icons: {primary: "ui-icon-arrowthick-1-n"}, text: false});
+		$("#cam_up").click(function(){
+			sendCameraRequest("up");
+		});
+		$( "#cam_down" ).button({icons: {primary: "ui-icon-arrowthick-1-s"}, text: false});
+		$("#cam_down").click(function(){
+			sendCameraRequest("down");
+		});
+		$( "#cam_left" ).button({icons: {primary: "ui-icon-arrowthick-1-w"}, text: false});
+		$("#cam_left").click(function(){
+			sendCameraRequest("left");
+		});
+		$( "#cam_right" ).button({icons: {primary: "ui-icon-arrowthick-1-e"}, text: false});
+		$("#cam_right").click(function(){
+			sendCameraRequest("right");
+		});
+		$( "#cam_center" ).button({icons: {primary: "ui-icon-bullet"}, text: false});
+		$("#cam_center").click(function(){
+			sendCameraRequest("center");
+		});
+		
 		window.setInterval(function(){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Status",
@@ -106,11 +134,25 @@
 				});
 		}
 		
+		function sendCameraRequest(direction){
+			$.ajax({
+				  url: "/RoboServer/dispatch/Camera/"+direction,
+				  success: function(message){
+					  $("#messages").val(message);
+				  },
+				  error: function(jqXHR, textStatus, errorThrown){
+					  $("#messages").css("color", "red");
+					  $("#messages").val(errorThrown + ": "+ jqXHR.responseText);
+				  }
+				});
+		}
+		
 		// initially force robot to stop
 		sendDriveRequest("forward", 0);
 		// initialize camera to center position
+		sendCameraRequest("center");
 		
-		document.body.style.fontSize = '1.1em';
+		document.body.style.fontSize = '1.2em';
 	});
 	</script>
 </head>
@@ -142,10 +184,12 @@
 
     <div class="right_box">
 	    <p><b>Kamerasteuerung</b></p>
-		<button id="cam_up">Auf</button><br>
+		<span style="padding-left : 3.0em"></span><button id="cam_up">Auf</button><br>
 		<button id="cam_left">Links</button>
+		<button id="cam_center">Center</button>
 		<button id="cam_right">Rechts</button><br>
-		<button id="cam_down">Ab</button>
+		<span style="padding-left : 3.0em"></span><button id="cam_down">Ab</button>
+		
     </div>
     
     <div class="footer">
