@@ -49,40 +49,61 @@
 
 		$( "#forward" ).button({icons: {primary: "ui-icon-arrowthick-1-n"}, text: false});
 		$("#forward").click(function(){
-			sendDriveRequest("forward",3);
+			sendDriveRequest("forward",$( "#slider" ).slider( "value" ));
 		});
 		$( "#forwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-nw"}, text: false});
 		$("#forwardLeft").click(function(){
-			sendDriveRequest("forwardLeft",3);
+			sendDriveRequest("forwardLeft",$( "#slider" ).slider( "value" ));
 		});
 		$( "#forwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-ne"}, text: false});
 		$("#forwardRight").click(function(){
-			sendDriveRequest("forwardRight",3);
+			sendDriveRequest("forwardRight",$( "#slider" ).slider( "value" ));
 		});
 		$( "#turnLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-w"}, text: false});
 		$("#turnLeft").click(function(){
-			sendDriveRequest("turnLeft",3);
+			sendDriveRequest("turnLeft",$( "#slider" ).slider( "value" ));
 		});
 		$( "#turnRight" ).button({icons: {primary: "ui-icon-arrowthick-1-e"}, text: false});
 		$("#turnRight").click(function(){
-			sendDriveRequest("turnRight",3);
+			sendDriveRequest("turnRight",$( "#slider" ).slider( "value" ));
 		});
 		$( "#backward" ).button({icons: {primary: "ui-icon-arrowthick-1-s"}, text: false});
 		$("#backward").click(function(){
-			sendDriveRequest("backward",3);
+			sendDriveRequest("backward",$( "#slider" ).slider( "value" ));
 		});
 		$( "#backwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-sw"}, text: false});
 		$("#backwardLeft").click(function(){
-			sendDriveRequest("backwardLeft",3);
+			sendDriveRequest("backwardLeft",$( "#slider" ).slider( "value" ));
 		});
 		$( "#backwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-se"}, text: false});
 		$("#backwardRight").click(function(){
-			sendDriveRequest("backwardRight",3);
+			sendDriveRequest("backwardRight",$( "#slider" ).slider( "value" ));
 		});
 		$( "#stop" ).button({icons: {primary: "ui-icon-bullet"}, text: false});
 		$("#stop").click(function(){
 			sendDriveRequest("forward",0);
 		});
+		
+	    $( "#slider" ).slider({
+	    	value:3,
+	        min: 3,
+	        max: 7,
+	        step: 2,
+	        slide: function( event, ui ) {
+	        	var display;
+	        	if(ui.value === 3){
+	        		display = "langsam";
+	        	}
+	        	else if (ui.value === 5){
+	        		display = "mittel";
+	        	}
+	        	else if (ui.value === 7){
+	        		display = "schnell";
+	        	}
+	        	$( "#speed" ).html( "Geschwindigkeit: "+ display);
+	        }
+	      });
+	      $( "#speed" ).html( "Geschwindigkeit: langsam" );
 		
 		/*
 		Camera UI
@@ -119,7 +140,7 @@
 					  $("#status").val(errorThrown + ": "+ jqXHR.responseText);
 				  }
 			});
-		}, 5000);
+		}, 10000);
 		
 		function sendDriveRequest(direction, speed){
 			$.ajax({
@@ -178,6 +199,9 @@
 				<input type="radio" id="backwardLeft" name="radio" /><label for="backwardLeft">Halb Links</label><span style="padding-left : 1.2em"></span>
 				<input type="radio" id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label><span style="padding-left : 1.2em"></span>
 				<input type="radio" id="backwardRight" name="radio" /><label for="backwardRight">Halb Rechts</label><br><br>
+				
+				<div id="speed">Speed: </div>
+				<div id="slider"></div>
 			</div>
 		</form>
     </div>
@@ -188,8 +212,7 @@
 		<button id="cam_left">Links</button>
 		<button id="cam_center">Center</button>
 		<button id="cam_right">Rechts</button><br>
-		<span style="padding-left : 3.0em"></span><button id="cam_down">Ab</button>
-		
+		<span style="padding-left : 3.0em"></span><button id="cam_down">Ab</button><br><br>
     </div>
     
     <div class="footer">
