@@ -25,12 +25,6 @@ public class CameraHandler extends Handler {
 	private short currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
 	private short currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
 	
-
-	public CameraHandler(){
-		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION);
-		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION);
-	}
-	
 	@Override
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /Camera/<direction>
@@ -53,6 +47,14 @@ public class CameraHandler extends Handler {
 	}
 	
 	@SuppressWarnings("unused")
+	private String initCamera(){
+		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION);
+		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION);
+		center();
+		return "Camera initialized";
+	}
+	
+	@SuppressWarnings("unused")
 	private String left(){
 		if(currentLeftRightCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further left";
@@ -63,7 +65,6 @@ public class CameraHandler extends Handler {
 		return "Move camera left";
 	}
 
-	@SuppressWarnings("unused")
 	private String center(){
 		currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
 		currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
