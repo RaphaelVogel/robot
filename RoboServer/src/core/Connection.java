@@ -2,10 +2,11 @@ package core;
 
 import java.io.IOException;
 import java.util.logging.Level;
-
 import java.util.logging.Logger;
+
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
+import com.tinkerforge.BrickletDualRelay;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.IPConnection.TimeoutException;
 
@@ -17,9 +18,11 @@ public class Connection {
 	private final int PORT = 4223;
 	private final String MASTER_UID = "94yAGJfk2iu";
 	private final String SERVO_UID = "ayQskEZifNn";
+	private final String DUAL_RELAY_UID = "bV3";
 	
 	private BrickMaster masterBrick = new BrickMaster(MASTER_UID);
 	private BrickServo servoBrick = new BrickServo(SERVO_UID);
+	private BrickletDualRelay dualRelais = new BrickletDualRelay(DUAL_RELAY_UID);
 	
 	private IPConnection ipConnection;
 	private Logger logger = Logger.getLogger(Connection.class.getName());
@@ -46,6 +49,7 @@ public class Connection {
 		try{
 			ipConnection.addDevice(masterBrick);
 			ipConnection.addDevice(servoBrick);
+			ipConnection.addDevice(dualRelais);
 			// set the Power Mode of WIFI to "Low Power"
 			masterBrick.setWifiPowerMode((short)1);
 		}
@@ -61,6 +65,10 @@ public class Connection {
 	
 	public BrickServo getServoBrick(){
 		return servoBrick;
+	}
+	
+	public BrickletDualRelay getDualRelaisBricklet(){
+		return dualRelais;
 	}
 	
 	public void destroyConnection(){

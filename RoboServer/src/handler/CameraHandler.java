@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tinkerforge.BrickServo;
+import com.tinkerforge.BrickletDualRelay;
 
 import core.Action;
 import core.Connection;
@@ -24,6 +25,8 @@ public class CameraHandler extends Handler {
 	
 	private short currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
 	private short currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
+	
+	private BrickletDualRelay dualRelais = Connection.getInstance().getDualRelaisBricklet();
 	
 	@Override
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
@@ -44,6 +47,18 @@ public class CameraHandler extends Handler {
 		}
 		sendResponse(HttpServletResponse.SC_OK, (String)resultString, response);
 		return;
+	}
+
+	@SuppressWarnings("unused")
+	private String on(){
+		dualRelais.setState(true, false);
+		return "Switch Camera On";
+	}
+	
+	@SuppressWarnings("unused")
+	private String off(){
+		dualRelais.setState(false, false);
+		return "Switch Camera Off";
 	}
 	
 	@SuppressWarnings("unused")
