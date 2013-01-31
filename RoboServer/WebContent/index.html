@@ -11,6 +11,8 @@
 	<style type="text/css">
 	div.wrapper{
 	    width: 630px;
+	    margin-left: auto; 
+	    margin-right: auto;
 	}
 
 	div.my_header{
@@ -38,6 +40,7 @@
 	    width: 610px;
 	}
 	</style>
+
 
 	<script>
 	$(function() {
@@ -105,6 +108,7 @@
 	      });
 	      $( "#speed" ).html( "Geschwindigkeit: langsam" );
 		
+	      
 		/*
 		Camera UI
 		*/
@@ -128,7 +132,27 @@
 		$("#cam_center").click(function(){
 			sendCameraRequest("center");
 		});
+		$("#cam_on").click(function(){
+			sendCameraRequest("on");
+			$( "#dialog" ).dialog( "open" );
+			setTimeout(function(){
+				$('#webcam').attr('src','http://192.168.178.17/video/mjpg.cgi?profileid=3');
+			},40000);
+		});
+		$("#cam_off").click(function(){
+			$('#webcam').attr('src','img/robo.jpg');
+			sendCameraRequest("off");
+		});
 		
+		/*
+		Dialog for starting camera
+		*/
+		$( "#dialog" ).dialog({autoOpen: false, position:{my: "center", at: "center", of: "#cam_on"}});
+		
+		
+		/*
+		Server requests
+		*/
 		window.setInterval(function(){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Status",
@@ -146,6 +170,7 @@
 			$.ajax({
 				  url: "/RoboServer/dispatch/Drive/"+direction+"/"+speed,
 				  success: function(message){
+					  $("#messages").css("color", "black");
 					  $("#messages").val(message);
 				  },
 				  error: function(jqXHR, textStatus, errorThrown){
@@ -159,6 +184,7 @@
 			$.ajax({
 				  url: "/RoboServer/dispatch/Camera/"+direction,
 				  success: function(message){
+					  $("#messages").css("color", "black");
 					  $("#messages").val(message);
 				  },
 				  error: function(jqXHR, textStatus, errorThrown){
@@ -173,7 +199,7 @@
 		// initialize camera to center position
 		sendCameraRequest("initCamera");
 		
-		document.body.style.fontSize = '1.2em';
+		document.body.style.fontSize = '1.1em';
 	});
 	</script>
 </head>
@@ -181,7 +207,11 @@
 
 <div class="wrapper">
 	<div class="header">
-	       <img alt="Robo Web Cam" src="http://192.168.178.17/video/mjpg.cgi?profileid=3">
+	       <img id="webcam" src="img/robo.jpg">
+	</div>
+
+	<div id="dialog" title="Kamera startet">
+  		<p>Kamera wird hochgefahren... Bitte warten</p>
 	</div>
 
     <div class="left_box">
@@ -200,7 +230,7 @@
 				<input type="radio" id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label><span style="padding-left : 1.2em"></span>
 				<input type="radio" id="backwardRight" name="radio" /><label for="backwardRight">Halb Rechts</label><br><br>
 				
-				<div id="speed">Speed: </div>
+				<div id="speed">Speed:</div><br>
 				<div id="slider"></div>
 			</div>
 		</form>
@@ -213,6 +243,8 @@
 		<button id="cam_center">Center</button>
 		<button id="cam_right">Rechts</button><br>
 		<span style="padding-left : 3.0em"></span><button id="cam_down">Ab</button><br><br>
+		<button id="cam_on">Kamera ein</button>
+		<button id="cam_off">Kamera aus</button><br><br>
     </div>
     
     <div class="footer">
