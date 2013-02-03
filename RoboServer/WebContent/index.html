@@ -198,6 +198,8 @@
 		sendDriveRequest("forward", 0);
 		// initialize camera to center position
 		sendCameraRequest("initCamera");
+		// first show robo picture instead of live stream‚
+		$('#webcam').attr('src','img/robo.jpg');
 		
 		document.body.style.fontSize = '1.1em';
 	});
@@ -207,7 +209,7 @@
 
 <div class="wrapper">
 	<div class="header">
-	       <img id="webcam" src="img/robo.jpg">
+	       <img id="webcam" src="">
 	</div>
 
 	<div id="dialog" title="Kamera startet">

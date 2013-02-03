@@ -51,7 +51,9 @@ public class DriveHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String forward(){
-		servoBrick.setPosition(servo0And1, speed);
+		// give right wheels more power
+		servoBrick.setPosition(servo1, (short)(speed+270));
+		servoBrick.setPosition(servo0, speed);
         servoBrick.enable(servo0And1);
 		return "Move forward with speed " + speed/SPEED_FACTOR;
 	}
