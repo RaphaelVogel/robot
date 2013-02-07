@@ -50,19 +50,19 @@ public class CameraHandler extends Handler {
 	}
 
 	@SuppressWarnings("unused")
-	private String on(){
+	private String on() throws Exception{
 		dualRelais.setState(true, false);
 		return "Switch Camera On";
 	}
 	
 	@SuppressWarnings("unused")
-	private String off(){
+	private String off() throws Exception{
 		dualRelais.setState(false, false);
 		return "Switch Camera Off";
 	}
 	
 	@SuppressWarnings("unused")
-	private String initCamera(){
+	private String initCamera() throws Exception{
 		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION);
 		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION);
 		center();
@@ -70,7 +70,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	@SuppressWarnings("unused")
-	private String left(){
+	private String left() throws Exception{
 		if(currentLeftRightCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further left";
 		}
@@ -80,7 +80,7 @@ public class CameraHandler extends Handler {
 		return "Move camera left";
 	}
 
-	private String center(){
+	private String center() throws Exception{
 		currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
 		currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
 		servoBrick.setPosition(servo2And3, (short)(CAMERA_MAX_POSITION/2));
@@ -89,7 +89,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	@SuppressWarnings("unused")
-	private String right(){
+	private String right() throws Exception{
 		if(currentLeftRightCameraPosition-DIRECTION_INCREMENT < 0){
 			return "Camera cannot move further right";
 		}
@@ -100,7 +100,7 @@ public class CameraHandler extends Handler {
 	}
 
 	@SuppressWarnings("unused")
-	private String down(){
+	private String down() throws Exception{
 		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < 0){
 			return "Camera cannot move further up";
 		}
@@ -111,7 +111,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	@SuppressWarnings("unused")
-	private String up(){
+	private String up() throws Exception{
 		if(currentUpDownCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further down";
 		}

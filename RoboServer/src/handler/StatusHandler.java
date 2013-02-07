@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tinkerforge.BrickMaster;
-import com.tinkerforge.IPConnection.TimeoutException;
 
 import core.Action;
 import core.Connection;
@@ -20,7 +19,7 @@ public class StatusHandler extends Handler{
 		try {
 			voltage = masterBrick.getStackVoltage();
 			current = masterBrick.getStackCurrent();
-		} catch (TimeoutException e) {
+		} catch (Exception e) {
 			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not retrieve current and voltage of stack", response);
 			return;
 		}
