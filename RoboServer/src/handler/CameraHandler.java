@@ -10,7 +10,6 @@ import com.tinkerforge.BrickServo;
 import com.tinkerforge.BrickletDualRelay;
 
 import core.Action;
-import core.Connection;
 import core.Handler;
 
 public class CameraHandler extends Handler {
@@ -19,14 +18,11 @@ public class CameraHandler extends Handler {
 	private short servo3 = (short)3; // camera up-down
 	private short servo2And3 = (short)((1 << 2) | (1 << 3) | (1 << 7));
 	
-	private BrickServo servoBrick = Connection.getInstance().getServoBrick();
 	private final static short CAMERA_MAX_POSITION = 20000; //RS-2 servo has 200 degree rotation range
 	private final static short DIRECTION_INCREMENT = 2500; // Camera moves 2500 units by each call
 	
 	private short currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
 	private short currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
-	
-	private BrickletDualRelay dualRelais = Connection.getInstance().getDualRelaisBricklet();
 	
 	@Override
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
@@ -51,18 +47,21 @@ public class CameraHandler extends Handler {
 
 	@SuppressWarnings("unused")
 	private String on() throws Exception{
+		BrickletDualRelay dualRelais = StackHandler.getDualRelaisBricklet();
 		dualRelais.setState(true, false);
 		return "Switch Camera On";
 	}
 	
 	@SuppressWarnings("unused")
 	private String off() throws Exception{
+		BrickletDualRelay dualRelais = StackHandler.getDualRelaisBricklet();
 		dualRelais.setState(false, false);
 		return "Switch Camera Off";
 	}
 	
 	@SuppressWarnings("unused")
 	private String initCamera() throws Exception{
+		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION);
 		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION);
 		center();
@@ -71,6 +70,7 @@ public class CameraHandler extends Handler {
 	
 	@SuppressWarnings("unused")
 	private String left() throws Exception{
+		BrickServo servoBrick = StackHandler.getServoBrick();
 		if(currentLeftRightCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further left";
 		}
@@ -81,6 +81,7 @@ public class CameraHandler extends Handler {
 	}
 
 	private String center() throws Exception{
+		BrickServo servoBrick = StackHandler.getServoBrick();
 		currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
 		currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
 		servoBrick.setPosition(servo2And3, (short)(CAMERA_MAX_POSITION/2));
@@ -90,6 +91,7 @@ public class CameraHandler extends Handler {
 	
 	@SuppressWarnings("unused")
 	private String right() throws Exception{
+		BrickServo servoBrick = StackHandler.getServoBrick();
 		if(currentLeftRightCameraPosition-DIRECTION_INCREMENT < 0){
 			return "Camera cannot move further right";
 		}
@@ -101,6 +103,7 @@ public class CameraHandler extends Handler {
 
 	@SuppressWarnings("unused")
 	private String down() throws Exception{
+		BrickServo servoBrick = StackHandler.getServoBrick();
 		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < 0){
 			return "Camera cannot move further up";
 		}
@@ -112,6 +115,7 @@ public class CameraHandler extends Handler {
 	
 	@SuppressWarnings("unused")
 	private String up() throws Exception{
+		BrickServo servoBrick = StackHandler.getServoBrick();
 		if(currentUpDownCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further down";
 		}

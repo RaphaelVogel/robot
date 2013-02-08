@@ -1,52 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>RoboServer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>RoboServer</title>
 
-	<link href="css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
-	<script src="js/jquery-1.9.0.js"></script>
-	<script src="js/jquery-ui-1.10.0.custom.js"></script>
+<link href="css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+<script src="js/jquery-1.9.0.js"></script>
+<script src="js/jquery-ui-1.10.0.custom.js"></script>
 
-	<style type="text/css">
-	div.wrapper{
-	    width: 630px;
-	    margin-left: auto; 
-	    margin-right: auto;
-	}
+<style type="text/css">
+div.wrapper {
+	width: 630px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
-	div.my_header{
-	    padding: 10px;
-	    width: 610px;
-	    height: 100px;
-	    overflow: hidden;
-	}
+div.my_header {
+	padding: 10px;
+	width: 610px;
+	height: 100px;
+	overflow: hidden;
+}
 
-	div.left_box{
-	    float: left;
-	    padding: 5px;
-	    width: 290px;
-	}
-	
-	div.right_box{
-	    float: right;
-	    padding: 5px;
-	    width: 290px;
-	}
-	
-	div.footer{
-	    clear:both;
-	    padding: 5px;
-	    width: 610px;
-	}
-	</style>
+div.left_box {
+	float: left;
+	padding: 5px;
+	width: 290px;
+}
+
+div.right_box {
+	float: right;
+	padding: 5px;
+	width: 290px;
+}
+
+div.footer {
+	clear: both;
+	padding: 5px;
+	width: 610px;
+}
+</style>
 
 
-	<script>
+<script>
 	$(function() {
 		
 		/*
-		Drive UI
+		* Drive UI
 		*/
 		$( "#move" ).buttonset();
 
@@ -84,7 +84,7 @@
 		});
 		$( "#stop" ).button({icons: {primary: "ui-icon-bullet"}, text: false});
 		$("#stop").click(function(){
-			sendDriveRequest("forward",0);
+			sendDriveRequest("stop",0);
 		});
 		
 	    $( "#slider" ).slider({
@@ -108,9 +108,9 @@
 	      });
 	      $( "#speed" ).html( "Geschwindigkeit: langsam" );
 		
-	      
+
 		/*
-		Camera UI
+		* Camera UI
 		*/
 		$( "#cam_up" ).button({icons: {primary: "ui-icon-arrowthick-1-n"}, text: false});
 		$("#cam_up").click(function(){
@@ -143,28 +143,40 @@
 			$('#webcam').attr('src','img/robo.jpg');
 			sendCameraRequest("off");
 		});
-		
-		/*
-		Dialog for starting camera
-		*/
+	
 		$( "#dialog" ).dialog({autoOpen: false, position:{my: "center", at: "center", of: "#cam_on"}});
 		
 		
 		/*
-		Server requests
+		* Update status button
 		*/
-		window.setInterval(function(){
+		$( "#updateStatus" ).click(function(){
+			sendStackCommand("getVoltAndAmpere");
+		});
+		
+		
+		/* -------------------------------------------------------------
+		*  Ajax calls
+		*/ -------------------------------------------------------------
+		function sendStackCommand(command){
 			$.ajax({
-				  url: "/RoboServer/dispatch/Status",
+				  url: "/RoboServer/dispatch/Stack/"+command,
 				  success: function(message){
+					  $("#status").css("color", "black");
 					  $("#status").val(message);
+					  if(command === "initialize"){
+					     // initially force robot to stop
+						 sendDriveRequest("stop", 0);
+						 // initialize camera to center position
+						 sendCameraRequest("initCamera");
+					  }
 				  },
 				  error: function(jqXHR, textStatus, errorThrown){
 					  $("#status").css("color", "red");
 					  $("#status").val(errorThrown + ": "+ jqXHR.responseText);
 				  }
 			});
-		}, 10000);
+		}
 		
 		function sendDriveRequest(direction, speed){
 			$.ajax({
@@ -194,10 +206,8 @@
 				});
 		}
 		
-		// initially force robot to stop
-		sendDriveRequest("forward", 0);
-		// initialize camera to center position
-		sendCameraRequest("initCamera");
+		// initialize Stack
+		sendStackCommand("initialize");
 		// first show robo picture instead of live stream‚
 		$('#webcam').attr('src','img/robo.jpg');
 		
@@ -205,60 +215,87 @@
 	});
 	</script>
 </head>
+
+
 <body>
 
-<div class="wrapper">
-	<div class="header">
-	       <img id="webcam" src="">
-	</div>
+	<div class="wrapper">
+		<div class="header">
+			<img id="webcam" src="">
+		</div>
 
-	<div id="dialog" title="Kamera startet">
-  		<p>Kamera wird hochgefahren... Bitte warten</p>
-	</div>
+		<div id="dialog" title="Kamera startet">
+			<p>Kamera wird hochgefahren... Bitte warten</p>
+		</div>
 
-    <div class="left_box">
-		<p><b>Fahrbefehle</b></p>
-		<form>
-			<div id="move">
-				<input type="radio" id="forwardLeft" name="radio"/><label for="forwardLeft">Halb Links</label><span style="padding-left : 1.2em"></span>
-				<input type="radio" id="forward" name="radio" /><label for="forward">&nbsp;&nbsp;Vorwärts&nbsp;&nbsp;</label><span style="padding-left : 1.2em"></span>
-				<input type="radio" id="forwardRight" name="radio" /><label for="forwardRight">Halb Rechts</label><br><br>
-				
-				<input type="radio" id="turnLeft" name="radio" /><label for="turnLeft">Links Drehen</label><span style="padding-left : 1.2em"></span>
-				<input type="radio" id="stop" name="radio" checked="checked" /><label for="stop">&nbsp;Stop&nbsp;</label><span style="padding-left : 1.2em"></span>
-				<input type="radio" id="turnRight" name="radio" /><label for="turnRight">Rechts Drehen</label><br><br>
-				
-				<input type="radio" id="backwardLeft" name="radio" /><label for="backwardLeft">Halb Links</label><span style="padding-left : 1.2em"></span>
-				<input type="radio" id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label><span style="padding-left : 1.2em"></span>
-				<input type="radio" id="backwardRight" name="radio" /><label for="backwardRight">Halb Rechts</label><br><br>
-				
-				<div id="speed">Speed:</div><br>
-				<div id="slider"></div>
+		<div class="left_box">
+			<p>
+				<b>Fahrbefehle</b>
+			</p>
+			<form>
+				<div id="move">
+					<input type="radio" id="forwardLeft" name="radio" /><label
+						for="forwardLeft">Halb Links</label><span
+						style="padding-left: 1.2em"></span> <input type="radio"
+						id="forward" name="radio" /><label for="forward">&nbsp;&nbsp;Vorwärts&nbsp;&nbsp;</label><span
+						style="padding-left: 1.2em"></span> <input type="radio"
+						id="forwardRight" name="radio" /><label for="forwardRight">Halb
+						Rechts</label><br>
+					<br> <input type="radio" id="turnLeft" name="radio" /><label
+						for="turnLeft">Links Drehen</label><span
+						style="padding-left: 1.2em"></span> <input type="radio" id="stop"
+						name="radio" checked="checked" /><label for="stop">&nbsp;Stop&nbsp;</label><span
+						style="padding-left: 1.2em"></span> <input type="radio"
+						id="turnRight" name="radio" /><label for="turnRight">Rechts
+						Drehen</label><br>
+					<br> <input type="radio" id="backwardLeft" name="radio" /><label
+						for="backwardLeft">Halb Links</label><span
+						style="padding-left: 1.2em"></span> <input type="radio"
+						id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label><span
+						style="padding-left: 1.2em"></span> <input type="radio"
+						id="backwardRight" name="radio" /><label for="backwardRight">Halb
+						Rechts</label><br>
+					<br>
+
+					<div id="speed">Speed:</div>
+					<br>
+					<div id="slider"></div>
+				</div>
+			</form>
+		</div>
+
+		<div class="right_box">
+			<p>
+				<b>Kamerasteuerung</b>
+			</p>
+			<span style="padding-left: 3.0em"></span>
+			<button id="cam_up">Auf</button>
+			<br>
+			<button id="cam_left">Links</button>
+			<button id="cam_center">Center</button>
+			<button id="cam_right">Rechts</button>
+			<br> <span style="padding-left: 3.0em"></span>
+			<button id="cam_down">Ab</button>
+			<br>
+			<br>
+			<button id="cam_on">Kamera ein</button>
+			<button id="cam_off">Kamera aus</button>
+			<br>
+			<br>
+		</div>
+
+		<div class="footer">
+			<p>
+				<b>Statusmeldungen</b>
+			</p>
+			<div>
+				<input id="messages" type="text" size="77" readonly="readonly">
 			</div>
-		</form>
-    </div>
-
-    <div class="right_box">
-	    <p><b>Kamerasteuerung</b></p>
-		<span style="padding-left : 3.0em"></span><button id="cam_up">Auf</button><br>
-		<button id="cam_left">Links</button>
-		<button id="cam_center">Center</button>
-		<button id="cam_right">Rechts</button><br>
-		<span style="padding-left : 3.0em"></span><button id="cam_down">Ab</button><br><br>
-		<button id="cam_on">Kamera ein</button>
-		<button id="cam_off">Kamera aus</button><br><br>
-    </div>
-    
-    <div class="footer">
-	    <p><b>Statusmeldungen</b></p>
-	    <div>
-			<input id="messages" type="text" size="77" readonly="readonly">
+			<div>
+				<input id="status" type="text" size="77" readonly="readonly"><button id="updateStatus">Update Status</button>
+			</div>
 		</div>
-		<div>
-			<input id="status" type="text" size="77" readonly="readonly">
-		</div>
-    </div>
-</div>
+	</div>
 
 </body>
 </html>
