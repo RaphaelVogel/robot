@@ -65,7 +65,7 @@ public class StackHandler extends Handler{
 		ipConnection.connect(HOST, PORT);
 		
 		// set the Power Mode of WIFI to "Low Power"
-		masterBrick.setWifiPowerMode((short)1);
+		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
 		return "Hardware initialized";
 	}
