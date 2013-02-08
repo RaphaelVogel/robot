@@ -105,23 +105,23 @@ public class CameraHandler extends Handler {
 	private String down() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < 0){
-			return "Camera cannot move further up";
+			return "Camera cannot move further down";
 		}
 		currentUpDownCameraPosition -= DIRECTION_INCREMENT;
 		servoBrick.setPosition(servo3, currentUpDownCameraPosition);
         servoBrick.enable(servo3);
-		return "Move camera up";
+		return "Move camera down";
 	}
 	
 	@SuppressWarnings("unused")
 	private String up() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		if(currentUpDownCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
-			return "Camera cannot move further down";
+			return "Camera cannot move further up";
 		}
 		currentUpDownCameraPosition += DIRECTION_INCREMENT;
 		servoBrick.setPosition(servo3, currentUpDownCameraPosition);
         servoBrick.enable(servo3);
-		return "Move camera down";
+		return "Move camera up";
 	}
 }
