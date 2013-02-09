@@ -154,6 +154,19 @@ div.footer {
 			sendStackCommand("getVoltAndAmpere");
 		});
 		
+		/*
+		* Disconnect button
+		*/
+		$( "#disconnect" ).click(function(){
+			sendStackCommand("cleanUp");
+		});
+		
+		/*
+		* Reconnect button
+		*/
+		$( "#reconnect" ).click(function(){
+			sendStackCommand("initialize");
+		});
 		
 		/* -------------------------------------------------------------
 		*  Ajax calls
@@ -292,7 +305,9 @@ div.footer {
 				<input id="messages" type="text" size="77" readonly="readonly">
 			</div>
 			<div>
-				<input id="status" type="text" size="77" readonly="readonly"><button id="updateStatus">Update Status</button>
+				<input id="status" type="text" size="77" readonly="readonly"><button id="updateStatus">Stromverbrauch</button><br>
+				<button id="disconnect">Verbindung beenden</button>
+				<button id="reconnect">Verbindung wieder aufbauen</button>
 			</div>
 		</div>
 	</div>

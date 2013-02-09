@@ -76,7 +76,7 @@ public class StackHandler extends Handler{
 			ipConnection.disconnect();
 			ipConnection = null;
 		}	
-		return "Hardware cleaned up";
+		return "Closed connection to stack";
 	}
 	
 	@SuppressWarnings("unused")
