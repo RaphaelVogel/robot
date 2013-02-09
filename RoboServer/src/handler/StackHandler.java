@@ -18,10 +18,10 @@ import core.Handler;
 public class StackHandler extends Handler{
 
 	private Logger logger = Logger.getLogger(StackHandler.class.getName());
-	private final String HOST = "192.168.178.18";
+	private final String HOST = "GainSpana0147e";
 	private final int PORT = 4223;
-	private final String MASTER_UID = "94yAGJfk2iu";
-	private final String SERVO_UID = "ayQskEZifNn";
+	private final String MASTER_UID = "5VGM8Y";
+	private final String SERVO_UID = "6QFwhz";
 	private final String DUAL_RELAY_UID = "bV3";
 	
 	private static BrickMaster masterBrick;
