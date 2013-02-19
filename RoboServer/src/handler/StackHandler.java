@@ -7,8 +7,11 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import listener.DistanceReached;
+
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
+import com.tinkerforge.BrickletDistanceIR;
 import com.tinkerforge.BrickletDualRelay;
 import com.tinkerforge.IPConnection;
 
@@ -23,10 +26,12 @@ public class StackHandler extends Handler{
 	private final String MASTER_UID = "5VGM8Y";
 	private final String SERVO_UID = "6QFwhz";
 	private final String DUAL_RELAY_UID = "bV3";
+	private final String DISTANCE_IR_UID = "cXb";
 	
 	private static BrickMaster masterBrick;
 	private static BrickServo servoBrick;
 	private static BrickletDualRelay dualRelais;
+	private static BrickletDistanceIR distanceIR;
 	
 	private IPConnection ipConnection;
 
@@ -62,10 +67,17 @@ public class StackHandler extends Handler{
 		masterBrick = new BrickMaster(MASTER_UID, ipConnection);
 		servoBrick = new BrickServo(SERVO_UID, ipConnection);
 		dualRelais = new BrickletDualRelay(DUAL_RELAY_UID, ipConnection);
+		distanceIR = new BrickletDistanceIR(DISTANCE_IR_UID, ipConnection);
 		ipConnection.connect(HOST, PORT);
 		
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
+		
+        // configure distance IR sensor
+		distanceIR.setDebouncePeriod(10000);
+		// distance smaller than 12cm
+        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)120, (short)0);
+        distanceIR.addDistanceReachedListener(new DistanceReached());
 		
 		return "Hardware initialized";
 	}

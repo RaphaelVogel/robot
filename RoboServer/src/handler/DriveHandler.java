@@ -45,17 +45,14 @@ public class DriveHandler extends Handler{
 		return;
 	}
 	
-
-	@SuppressWarnings("unused")
-	private String stop() throws Exception{
+	public String stop() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0And1, (short)0);
         servoBrick.enable(servo0And1);
 		return "Robot stopped";
 	}
 	
-	@SuppressWarnings("unused")
-	private String forward() throws Exception{
+	public String forward() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		// give right wheels more power
 		servoBrick.setPosition(servo1, (short)(speed+270));
@@ -64,56 +61,49 @@ public class DriveHandler extends Handler{
 		return "Move forward with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String backward() throws Exception{
+	public String backward() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0And1, (short)(speed * (-1)));
         servoBrick.enable(servo0And1);
 		return "Move backward with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String turnLeft() throws Exception{
+	public String turnLeft() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0, (short)(speed * (-1)));
 		servoBrick.setPosition(servo1, speed);
 		return "Turn left with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String turnRight() throws Exception{
+	public String turnRight() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo1, (short)(speed * (-1)));
 		servoBrick.setPosition(servo0, speed);
 		return "Turn right with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String forwardLeft() throws Exception{
+	public String forwardLeft() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0, (short)(speed/1.6));
 		servoBrick.setPosition(servo1, speed);
 		return "Move forward left with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String forwardRight() throws Exception{
+	public String forwardRight() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0, speed);
 		servoBrick.setPosition(servo1, (short)(speed/1.6));
 		return "Move forward right with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String backwardLeft() throws Exception{
+	public String backwardLeft() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0, (short)(speed * (-1)/1.6));
 		servoBrick.setPosition(servo1, (short)(speed * (-1)));
 		return "Move backward left with speed " + speed/SPEED_FACTOR;
 	}
 	
-	@SuppressWarnings("unused")
-	private String backwardRight() throws Exception{
+	public String backwardRight() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(servo0, (short)(speed * (-1)));
 		servoBrick.setPosition(servo1, (short)(speed * (-1)/1.6));
