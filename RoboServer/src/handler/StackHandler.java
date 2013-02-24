@@ -74,9 +74,9 @@ public class StackHandler extends Handler{
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
         // configure distance IR sensor
-		distanceIR.setDebouncePeriod(10000);
-		// distance smaller than 18cm
-        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)180, (short)0);
+		distanceIR.setDebouncePeriod(3000);
+		// distance smaller than 20cm
+        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)200, (short)0);
         distanceIR.addDistanceReachedListener(new DistanceReached());
 		
 		return "Hardware initialized";
