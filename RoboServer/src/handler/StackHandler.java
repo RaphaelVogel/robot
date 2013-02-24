@@ -21,9 +21,9 @@ import core.Handler;
 public class StackHandler extends Handler{
 
 	private Logger logger = Logger.getLogger(StackHandler.class.getName());
-	private final String HOST = "192.168.178.18";
+	private final String HOST = "robo";
 	private final int PORT = 4223;
-	private final String MASTER_UID = "5VGM8Y";
+	private final String MASTER_UID = "6rkQPB";
 	private final String SERVO_UID = "6QFwhz";
 	private final String DUAL_RELAY_UID = "bV3";
 	private final String DISTANCE_IR_UID = "cXb";
