@@ -75,8 +75,8 @@ public class StackHandler extends Handler{
 		
         // configure distance IR sensor
 		distanceIR.setDebouncePeriod(10000);
-		// distance smaller than 12cm
-        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)120, (short)0);
+		// distance smaller than 18cm
+        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)180, (short)0);
         distanceIR.addDistanceReachedListener(new DistanceReached());
 		
 		return "Hardware initialized";
