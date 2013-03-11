@@ -136,8 +136,8 @@ div.footer {
 			sendCameraRequest("on");
 			$( "#dialog" ).dialog( "open" );
 			setTimeout(function(){
-				$('#webcam').attr('src','http://192.168.178.17/video/mjpg.cgi?profileid=3');
-			},40000);
+				$('#webcam').attr('src','http://rvogel.no-ip.org/RoboServer/video');
+			},30000);
 		});
 		$("#cam_off").click(function(){
 			$('#webcam').attr('src','img/robo.jpg');

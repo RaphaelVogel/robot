@@ -17,6 +17,16 @@
 		<servlet-name>Dispatcher</servlet-name>
 		<url-pattern>/dispatch/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>Video</display-name>
+		<servlet-name>Video</servlet-name>
+		<servlet-class>core.Video</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Video</servlet-name>
+		<url-pattern>/video/*</url-pattern>
+	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>RoboServer</web-resource-name>
