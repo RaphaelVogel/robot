@@ -137,7 +137,7 @@ div.footer {
 			$( "#dialog" ).dialog( "open" );
 			setTimeout(function(){
 				$('#webcam').attr('src','http://rvogel.no-ip.org/RoboServer/video');
-			},30000);
+			},40000);
 		});
 		$("#cam_off").click(function(){
 			$('#webcam').attr('src','img/robo.jpg');
@@ -234,11 +234,11 @@ div.footer {
 
 	<div class="wrapper">
 		<div class="header">
-			<img id="webcam" src="">
+			<img id="webcam" src="#">
 		</div>
 
 		<div id="dialog" title="Kamera startet">
-			<p>Kamera wird hochgefahren... Bitte warten</p>
+			<p>Kamera wird hochgefahren. Dauert ca. 40s... Bitte warten</p>
 		</div>
 
 		<div class="left_box">
