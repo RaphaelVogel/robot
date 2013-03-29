@@ -62,6 +62,10 @@ public class StackHandler extends Handler{
 	private String initialize() throws Exception{
 		if(isConnectedOrPending()){
 			// disconnect before connect
+			if(monoflopThread != null && monoflopThread.isAlive()){
+				monoflopThread.shouldRun = false;
+				Thread.sleep(500);
+			}
 			ipConnection.disconnect();
 			ipConnection = null;
 		}
@@ -97,8 +101,10 @@ public class StackHandler extends Handler{
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
 		// stop ESC and camera and wait before killing connection
-		monoflopThread.shouldRun = false;
-		Thread.sleep(1000);
+		if(monoflopThread != null && monoflopThread.isAlive()){
+			monoflopThread.shouldRun = false;
+			Thread.sleep(500);
+		}
 		if(isConnectedOrPending()){
 			ipConnection.disconnect();
 			ipConnection = null;
