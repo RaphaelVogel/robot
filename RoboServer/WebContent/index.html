@@ -177,12 +177,6 @@ div.footer {
 				  success: function(message){
 					  $("#status").css("color", "black");
 					  $("#status").val(message);
-					  if(command === "initialize"){
-					     // initially force robot to stop
-						 sendDriveRequest("stop", 0);
-						 // initialize camera to center position
-						 sendCameraRequest("initCamera");
-					  }
 				  },
 				  error: function(jqXHR, textStatus, errorThrown){
 					  $("#status").css("color", "red");

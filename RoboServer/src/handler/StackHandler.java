@@ -75,10 +75,16 @@ public class StackHandler extends Handler{
 		
         // configure distance IR sensor
 		distanceIR.setDebouncePeriod(3000);
-		// distance smaller than 20cm
-        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)200, (short)0);
+		// distance smaller than 25cm
+        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
         distanceIR.addDistanceReachedListener(new DistanceReached());
 		
+        // initially stop robot and center camera
+        DriveHandler driveHandler = new DriveHandler();
+        driveHandler.stop();
+        CameraHandler cameraHandler = new CameraHandler();
+        cameraHandler.center();
+        
 		return "Hardware initialized";
 	}
 	
