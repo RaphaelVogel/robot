@@ -132,20 +132,8 @@ div.footer {
 		$("#cam_center").click(function(){
 			sendCameraRequest("center");
 		});
-		$("#cam_on").click(function(){
-			sendCameraRequest("on");
-			$( "#dialog" ).dialog( "open" );
-			setTimeout(function(){
-				$('#webcam').attr('src','http://rvogel.no-ip.org/RoboServer/video');
-			},40000);
-		});
-		$("#cam_off").click(function(){
-			$('#webcam').attr('src','img/robo.jpg');
-			sendCameraRequest("off");
-		});
 	
-		$( "#dialog" ).dialog({autoOpen: false, position:{my: "center", at: "center", of: "#cam_on"}});
-		
+		$( "#dialog" ).dialog({autoOpen: false});
 		
 		/*
 		* Update status button
@@ -158,14 +146,8 @@ div.footer {
 		* Disconnect button
 		*/
 		$( "#disconnect" ).click(function(){
+			$('#webcam').attr('src','img/robo.jpg');
 			sendStackCommand("cleanUp");
-		});
-		
-		/*
-		* Reconnect button
-		*/
-		$( "#reconnect" ).click(function(){
-			sendStackCommand("initialize");
 		});
 		
 		/* -------------------------------------------------------------
@@ -217,7 +199,13 @@ div.footer {
 		sendStackCommand("initialize");
 		// first show robo picture instead of live stream‚
 		$('#webcam').attr('src','img/robo.jpg');
-		
+		$( "#dialog" ).dialog( "open" );
+		window.setTimeout(function(){
+			$('#webcam').attr('src','http://rvogel.no-ip.org/RoboServer/video');
+		},40000);
+		window.setTimeout(function(){
+			$( "#dialog" ).dialog( "close" );
+		},3000);
 		document.body.style.fontSize = '1.1em';
 	});
 	</script>
@@ -271,7 +259,7 @@ div.footer {
 			</form>
 		</div>
 
-		<div class="right_box">
+		<div id="rightBox" class="right_box">
 			<p>
 				<b>Kamerasteuerung</b>
 			</p>
@@ -283,12 +271,6 @@ div.footer {
 			<button id="cam_right">Rechts</button>
 			<br> <span style="padding-left: 3.0em"></span>
 			<button id="cam_down">Ab</button>
-			<br>
-			<br>
-			<button id="cam_on">Kamera ein</button>
-			<button id="cam_off">Kamera aus</button>
-			<br>
-			<br>
 		</div>
 
 		<div class="footer">
@@ -301,7 +283,6 @@ div.footer {
 			<div>
 				<input id="status" type="text" size="77" readonly="readonly"><button id="updateStatus">Stromverbrauch</button><br>
 				<button id="disconnect">Verbindung beenden</button>
-				<button id="reconnect">Verbindung wieder aufbauen</button>
 			</div>
 		</div>
 	</div>

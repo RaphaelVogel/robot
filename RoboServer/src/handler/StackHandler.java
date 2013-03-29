@@ -17,6 +17,7 @@ import com.tinkerforge.IPConnection;
 
 import core.Action;
 import core.Handler;
+import core.MonoflopStarter;
 
 public class StackHandler extends Handler{
 
@@ -34,6 +35,7 @@ public class StackHandler extends Handler{
 	private static BrickletDistanceIR distanceIR;
 	
 	private IPConnection ipConnection;
+	private MonoflopStarter monoflopThread;
 
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /Stack/<command>
@@ -79,6 +81,10 @@ public class StackHandler extends Handler{
         distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
         distanceIR.addDistanceReachedListener(new DistanceReached());
 		
+        // start camera and ESC in save mode (using monoflop relais)
+        monoflopThread = new MonoflopStarter();
+        monoflopThread.start();
+        
         // initially stop robot and center camera
         DriveHandler driveHandler = new DriveHandler();
         driveHandler.stop();
@@ -90,6 +96,9 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
+		// stop ESC and camera and wait before killing connection
+		monoflopThread.shouldRun = false;
+		Thread.sleep(1000);
 		if(isConnectedOrPending()){
 			ipConnection.disconnect();
 			ipConnection = null;

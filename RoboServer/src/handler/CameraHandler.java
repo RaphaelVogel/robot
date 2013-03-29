@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tinkerforge.BrickServo;
-import com.tinkerforge.BrickletDualRelay;
 
 import core.Action;
 import core.Handler;
@@ -43,18 +42,6 @@ public class CameraHandler extends Handler {
 		}
 		sendResponse(HttpServletResponse.SC_OK, (String)resultString, response);
 		return;
-	}
-
-	public String on() throws Exception{
-		BrickletDualRelay dualRelais = StackHandler.getDualRelaisBricklet();
-		dualRelais.setState(true, false);
-		return "Switch Camera On";
-	}
-	
-	public String off() throws Exception{
-		BrickletDualRelay dualRelais = StackHandler.getDualRelaisBricklet();
-		dualRelais.setState(false, false);
-		return "Switch Camera Off";
 	}
 	
 	public String initCamera() throws Exception{
