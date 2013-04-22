@@ -61,7 +61,7 @@ public class StackHandler extends Handler{
 	@SuppressWarnings("unused")
 	private String initialize() throws Exception{
 		if(isConnectedOrPending()){
-			// disconnect before connect
+			// forget to clean up - disconnect before connect
 			if(monoflopThread != null && monoflopThread.isAlive()){
 				monoflopThread.shouldRun = false;
 				Thread.sleep(500);
@@ -103,6 +103,7 @@ public class StackHandler extends Handler{
 		// stop ESC and camera and wait before killing connection
 		if(monoflopThread != null && monoflopThread.isAlive()){
 			monoflopThread.shouldRun = false;
+			monoflopThread = null;
 			Thread.sleep(500);
 		}
 		if(isConnectedOrPending()){
