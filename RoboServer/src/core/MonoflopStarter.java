@@ -4,7 +4,7 @@ import handler.StackHandler;
 
 import java.util.logging.Logger;
 
-import com.tinkerforge.BrickletDualRelay;
+import com.tinkerforge.BrickletIndustrialQuadRelay;
 
 /**
  * This class starts the ESC and the camera using the monoflop relais 
@@ -15,15 +15,14 @@ import com.tinkerforge.BrickletDualRelay;
  */
 public class MonoflopStarter extends Thread {
 	private Logger logger = Logger.getLogger(MonoflopStarter.class.getName());
-	private BrickletDualRelay relais = StackHandler.getDualRelaisBricklet();
+	private BrickletIndustrialQuadRelay relais = StackHandler.getQuadRelaisBricklet();
 	
 	public boolean shouldRun = true;
 	
 	public void run(){
 		while(shouldRun){
 			try {
-				relais.setMonoflop((short)1, true, 3000);
-				relais.setMonoflop((short)2, true, 3000);
+				relais.setMonoflop((1 << 0) | (1 << 1) | (1 << 2), (1 << 0) | (1 << 1) | (1 << 2), 3000);
 				MonoflopStarter.sleep(2000);
 			} catch (Exception e) {
 				logger.severe("Monoflop calls failed");

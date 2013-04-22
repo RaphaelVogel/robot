@@ -12,7 +12,7 @@ import listener.DistanceReached;
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
 import com.tinkerforge.BrickletDistanceIR;
-import com.tinkerforge.BrickletDualRelay;
+import com.tinkerforge.BrickletIndustrialQuadRelay;
 import com.tinkerforge.IPConnection;
 
 import core.Action;
@@ -26,12 +26,12 @@ public class StackHandler extends Handler{
 	private final int PORT = 4223;
 	private final String MASTER_UID = "6rkQPB";
 	private final String SERVO_UID = "6QFwhz";
-	private final String DUAL_RELAY_UID = "bV3";
+	private final String QUAD_RELAIS_UID = "cts";
 	private final String DISTANCE_IR_UID = "cXb";
 	
 	private static BrickMaster masterBrick;
 	private static BrickServo servoBrick;
-	private static BrickletDualRelay dualRelais;
+	private static BrickletIndustrialQuadRelay quadRelais;
 	private static BrickletDistanceIR distanceIR;
 	
 	private IPConnection ipConnection;
@@ -72,7 +72,7 @@ public class StackHandler extends Handler{
 		ipConnection = new IPConnection();
 		masterBrick = new BrickMaster(MASTER_UID, ipConnection);
 		servoBrick = new BrickServo(SERVO_UID, ipConnection);
-		dualRelais = new BrickletDualRelay(DUAL_RELAY_UID, ipConnection);
+		quadRelais = new BrickletIndustrialQuadRelay(QUAD_RELAIS_UID, ipConnection);
 		distanceIR = new BrickletDistanceIR(DISTANCE_IR_UID, ipConnection);
 		ipConnection.connect(HOST, PORT);
 		
@@ -139,7 +139,7 @@ public class StackHandler extends Handler{
 		return masterBrick;
 	}
 	
-	public static BrickletDualRelay getDualRelaisBricklet(){
-		return dualRelais;
+	public static BrickletIndustrialQuadRelay getQuadRelaisBricklet(){
+		return quadRelais;
 	}
 }
