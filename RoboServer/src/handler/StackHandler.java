@@ -7,17 +7,17 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import listener.DistanceReached;
-
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
 import com.tinkerforge.BrickletDistanceIR;
 import com.tinkerforge.BrickletIndustrialQuadRelay;
 import com.tinkerforge.IPConnection;
+import com.tinkerforge.NotConnectedException;
 
 import core.Action;
+import core.CameraMonoflop;
+import core.DriveMonoflop;
 import core.Handler;
-import core.MonoflopStarter;
 
 public class StackHandler extends Handler{
 
@@ -34,8 +34,10 @@ public class StackHandler extends Handler{
 	private static BrickletIndustrialQuadRelay quadRelais;
 	private static BrickletDistanceIR distanceIR;
 	
+	private static DriveMonoflop driveMonoflop;
+	private static CameraMonoflop cameraMonoflop;
+	
 	private IPConnection ipConnection;
-	private MonoflopStarter monoflopThread;
 
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /Stack/<command>
@@ -60,15 +62,8 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String initialize() throws Exception{
-		if(isConnectedOrPending()){
-			// forget to clean up - disconnect before connect
-			if(monoflopThread != null && monoflopThread.isAlive()){
-				monoflopThread.shouldRun = false;
-				Thread.sleep(500);
-			}
-			ipConnection.disconnect();
-			ipConnection = null;
-		}
+		cleanConnectionAndMonoflop();
+		
 		ipConnection = new IPConnection();
 		masterBrick = new BrickMaster(MASTER_UID, ipConnection);
 		servoBrick = new BrickServo(SERVO_UID, ipConnection);
@@ -79,15 +74,17 @@ public class StackHandler extends Handler{
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
-        // configure distance IR sensor
-		distanceIR.setDebouncePeriod(3000);
-		// distance smaller than 25cm
-        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
-        distanceIR.addDistanceReachedListener(new DistanceReached());
+//        // configure distance IR sensor
+//		distanceIR.setDebouncePeriod(3000);
+//		// distance smaller than 25cm
+//        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
+//        distanceIR.addDistanceReachedListener(new DistanceReached());
 		
         // start camera and ESC in save mode (using monoflop relais)
-        monoflopThread = new MonoflopStarter();
-        monoflopThread.start();
+        driveMonoflop = new DriveMonoflop();
+        driveMonoflop.start();
+        cameraMonoflop = new CameraMonoflop();
+        cameraMonoflop.start();
         
         // initially stop robot and center camera
         DriveHandler driveHandler = new DriveHandler();
@@ -100,19 +97,10 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
-		// stop ESC and camera and wait before killing connection
-		if(monoflopThread != null && monoflopThread.isAlive()){
-			monoflopThread.shouldRun = false;
-			monoflopThread = null;
-			Thread.sleep(500);
-		}
-		if(isConnectedOrPending()){
-			ipConnection.disconnect();
-			ipConnection = null;
-		}	
+		cleanConnectionAndMonoflop();
 		return "Closed connection to stack";
 	}
-	
+
 	@SuppressWarnings("unused")
 	private String getVoltAndAmpere() throws Exception{
 		int voltage;
@@ -122,15 +110,6 @@ public class StackHandler extends Handler{
 		return "Voltage: " + voltage + " mV | Current: " + current + " mA";
 	}
 
-	
-	private boolean isConnectedOrPending(){
-		if(ipConnection == null){
-			return false;
-		}
-		return (ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_CONNECTED ||
-				ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_PENDING);
-	}
-	
 	public static BrickServo getServoBrick(){
 		return servoBrick;
 	}
@@ -141,5 +120,36 @@ public class StackHandler extends Handler{
 	
 	public static BrickletIndustrialQuadRelay getQuadRelaisBricklet(){
 		return quadRelais;
+	}
+	
+	public static DriveMonoflop getDriveMonoflop(){
+		return driveMonoflop;
+	}
+	
+	public static CameraMonoflop getCameraMonoflop(){
+		return cameraMonoflop;
+	}
+	
+	private void cleanConnectionAndMonoflop() throws Exception {
+		if(driveMonoflop != null){
+			driveMonoflop.stopDriveMonoflop();
+			driveMonoflop = null;
+		}
+		if(cameraMonoflop != null){
+			cameraMonoflop.stopCameraMonoflop();
+			cameraMonoflop = null;
+		}
+		if(isConnectedOrPending()){
+			ipConnection.disconnect();
+			ipConnection = null;
+		}
+	}
+	
+	private boolean isConnectedOrPending(){
+		if(ipConnection == null){
+			return false;
+		}
+		return (ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_CONNECTED ||
+				ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_PENDING);
 	}
 }

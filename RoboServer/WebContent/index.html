@@ -90,17 +90,17 @@ div.footer {
 	    $( "#slider" ).slider({
 	    	value:3,
 	        min: 3,
-	        max: 7,
-	        step: 2,
+	        max: 5,
+	        step: 1,
 	        slide: function( event, ui ) {
 	        	var display;
 	        	if(ui.value === 3){
 	        		display = "langsam";
 	        	}
-	        	else if (ui.value === 5){
+	        	else if (ui.value === 4){
 	        		display = "mittel";
 	        	}
-	        	else if (ui.value === 7){
+	        	else if (ui.value === 5){
 	        		display = "schnell";
 	        	}
 	        	$( "#speed" ).html( "Geschwindigkeit: "+ display);
@@ -131,6 +131,10 @@ div.footer {
 		$( "#cam_center" ).button({icons: {primary: "ui-icon-bullet"}, text: false});
 		$("#cam_center").click(function(){
 			sendCameraRequest("center");
+		});
+		$("#cam_off").click(function(){
+			$('#webcam').attr('src','img/robo.jpg');
+			sendCameraRequest("off");
 		});
 	
 		$( "#dialog" ).dialog({autoOpen: false});
@@ -271,6 +275,8 @@ div.footer {
 			<button id="cam_right">Rechts</button>
 			<br> <span style="padding-left: 3.0em"></span>
 			<button id="cam_down">Ab</button>
+			<br><br>
+			<button id="cam_off">Kamera aus</button>
 		</div>
 
 		<div class="footer">

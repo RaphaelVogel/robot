@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tinkerforge.BrickServo;
+import com.tinkerforge.BrickletIndustrialQuadRelay;
 
 import core.Action;
+import core.CameraMonoflop;
 import core.Handler;
 
 public class CameraHandler extends Handler {
@@ -17,11 +19,12 @@ public class CameraHandler extends Handler {
 	private short servo3 = (short)3; // camera up-down
 	private short servo2And3 = (short)((1 << 2) | (1 << 3) | (1 << 7));
 	
-	private final static short CAMERA_MAX_POSITION = 20000; //RS-2 servo has 200 degree rotation range
-	private final static short DIRECTION_INCREMENT = 2500; // Camera moves 2500 units by each call
+	private final static short CAMERA_MAX_POSITION = 9000;
+	private final static short CAMERA_MIN_POSITION = -9000;
+	private final static short DIRECTION_INCREMENT = 1500;
 	
-	private short currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
-	private short currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
+	private short currentLeftRightCameraPosition = 0;
+	private short currentUpDownCameraPosition = 0;
 	
 	@Override
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
@@ -46,10 +49,15 @@ public class CameraHandler extends Handler {
 	
 	public String initCamera() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
-		servoBrick.setDegree(servo2, (short)0, CAMERA_MAX_POSITION);
-		servoBrick.setDegree(servo3, (short)0, CAMERA_MAX_POSITION);
+		servoBrick.setDegree(servo2, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
+		servoBrick.setDegree(servo3, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
 		center();
 		return "Camera initialized";
+	}
+	
+	public String off() throws Exception{
+		StackHandler.getCameraMonoflop().stopCameraMonoflop();
+		return "Switch Camera Off";
 	}
 	
 	public String left() throws Exception{
@@ -65,16 +73,16 @@ public class CameraHandler extends Handler {
 
 	public String center() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
-		currentLeftRightCameraPosition = CAMERA_MAX_POSITION/2;
-		currentUpDownCameraPosition = CAMERA_MAX_POSITION/2;
-		servoBrick.setPosition(servo2And3, (short)(CAMERA_MAX_POSITION/2));
+		currentLeftRightCameraPosition = 0;
+		currentUpDownCameraPosition = 0;
+		servoBrick.setPosition(servo2And3, (short)0);
         servoBrick.enable(servo2And3);
 		return "Center camera";
 	}
 	
 	public String right() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
-		if(currentLeftRightCameraPosition-DIRECTION_INCREMENT < 0){
+		if(currentLeftRightCameraPosition-DIRECTION_INCREMENT < CAMERA_MIN_POSITION){
 			return "Camera cannot move further right";
 		}
 		currentLeftRightCameraPosition -= DIRECTION_INCREMENT;
@@ -85,7 +93,7 @@ public class CameraHandler extends Handler {
 
 	public String down() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
-		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < 0){
+		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < CAMERA_MIN_POSITION){
 			return "Camera cannot move further down";
 		}
 		currentUpDownCameraPosition -= DIRECTION_INCREMENT;
