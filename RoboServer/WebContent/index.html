@@ -132,10 +132,6 @@ div.footer {
 		$("#cam_center").click(function(){
 			sendCameraRequest("center");
 		});
-		$("#cam_off").click(function(){
-			$('#webcam').attr('src','img/robo.jpg');
-			sendCameraRequest("off");
-		});
 	
 		$( "#dialog" ).dialog({autoOpen: false});
 		
@@ -275,8 +271,6 @@ div.footer {
 			<button id="cam_right">Rechts</button>
 			<br> <span style="padding-left: 3.0em"></span>
 			<button id="cam_down">Ab</button>
-			<br><br>
-			<button id="cam_off">Kamera aus</button>
 		</div>
 
 		<div class="footer">

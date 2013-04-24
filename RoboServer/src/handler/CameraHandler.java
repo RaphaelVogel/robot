@@ -7,10 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tinkerforge.BrickServo;
-import com.tinkerforge.BrickletIndustrialQuadRelay;
 
 import core.Action;
-import core.CameraMonoflop;
 import core.Handler;
 
 public class CameraHandler extends Handler {
@@ -53,11 +51,6 @@ public class CameraHandler extends Handler {
 		servoBrick.setDegree(servo3, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
 		center();
 		return "Camera initialized";
-	}
-	
-	public String off() throws Exception{
-		StackHandler.getCameraMonoflop().stopCameraMonoflop();
-		return "Switch Camera Off";
 	}
 	
 	public String left() throws Exception{

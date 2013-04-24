@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
 import com.tinkerforge.BrickletDistanceIR;
+import com.tinkerforge.BrickletDualRelay;
 import com.tinkerforge.BrickletIndustrialQuadRelay;
 import com.tinkerforge.IPConnection;
-import com.tinkerforge.NotConnectedException;
 
 import core.Action;
 import core.CameraMonoflop;
@@ -28,11 +28,13 @@ public class StackHandler extends Handler{
 	private final String SERVO_UID = "6QFwhz";
 	private final String QUAD_RELAIS_UID = "cts";
 	private final String DISTANCE_IR_UID = "cXb";
+	private final String DUAL_RELAY_UID = "bV3";
 	
 	private static BrickMaster masterBrick;
 	private static BrickServo servoBrick;
 	private static BrickletIndustrialQuadRelay quadRelais;
 	private static BrickletDistanceIR distanceIR;
+	private static BrickletDualRelay dualRelais;
 	
 	private static DriveMonoflop driveMonoflop;
 	private static CameraMonoflop cameraMonoflop;
@@ -62,12 +64,13 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String initialize() throws Exception{
-		cleanConnectionAndMonoflop();
+		cleanConnectionAndMonoflops();
 		
 		ipConnection = new IPConnection();
 		masterBrick = new BrickMaster(MASTER_UID, ipConnection);
 		servoBrick = new BrickServo(SERVO_UID, ipConnection);
 		quadRelais = new BrickletIndustrialQuadRelay(QUAD_RELAIS_UID, ipConnection);
+		dualRelais = new BrickletDualRelay(DUAL_RELAY_UID, ipConnection);
 		distanceIR = new BrickletDistanceIR(DISTANCE_IR_UID, ipConnection);
 		ipConnection.connect(HOST, PORT);
 		
@@ -97,7 +100,7 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
-		cleanConnectionAndMonoflop();
+		cleanConnectionAndMonoflops();
 		return "Closed connection to stack";
 	}
 
@@ -121,6 +124,10 @@ public class StackHandler extends Handler{
 	public static BrickletIndustrialQuadRelay getQuadRelaisBricklet(){
 		return quadRelais;
 	}
+
+	public static BrickletDualRelay getDualRelaisBricklet(){
+		return dualRelais;
+	}
 	
 	public static DriveMonoflop getDriveMonoflop(){
 		return driveMonoflop;
@@ -130,7 +137,7 @@ public class StackHandler extends Handler{
 		return cameraMonoflop;
 	}
 	
-	private void cleanConnectionAndMonoflop() throws Exception {
+	private void cleanConnectionAndMonoflops() throws Exception {
 		if(driveMonoflop != null){
 			driveMonoflop.stopDriveMonoflop();
 			driveMonoflop = null;

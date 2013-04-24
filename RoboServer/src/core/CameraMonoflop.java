@@ -4,7 +4,7 @@ import handler.StackHandler;
 
 import java.util.logging.Logger;
 
-import com.tinkerforge.BrickletIndustrialQuadRelay;
+import com.tinkerforge.BrickletDualRelay;
 
 /**
  * This class starts the camera using the monoflop relais 
@@ -24,11 +24,11 @@ public class CameraMonoflop extends Thread {
 	}
 	
 	public void run(){
-		BrickletIndustrialQuadRelay relais = StackHandler.getQuadRelaisBricklet();
+		BrickletDualRelay relais = StackHandler.getDualRelaisBricklet();
 		while(shouldRun){
 			try {
-				relais.setMonoflop((1 << 2), (1 << 2), 3000);
-				CameraMonoflop.sleep(2000);
+				relais.setMonoflop((short)1, true, 4000);
+				CameraMonoflop.sleep(3000);
 			} catch (Exception e) {
 				logger.severe("Camera Monoflop call failed");
 			}
