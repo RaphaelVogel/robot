@@ -77,6 +77,10 @@ public class StackHandler extends Handler{
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
+		// configure the servo brick
+		short servo0And1 = (short)((1 << 0) | (1 << 1) | (1 << 7));
+		servoBrick.setAcceleration(servo0And1, 40000);
+		
 //        // configure distance IR sensor
 //		distanceIR.setDebouncePeriod(3000);
 //		// distance smaller than 25cm
@@ -140,10 +144,12 @@ public class StackHandler extends Handler{
 	private void cleanConnectionAndMonoflops() throws Exception {
 		if(driveMonoflop != null){
 			driveMonoflop.stopDriveMonoflop();
+			quadRelais.setValue((0 << 0) | (0 << 1));
 			driveMonoflop = null;
 		}
 		if(cameraMonoflop != null){
 			cameraMonoflop.stopCameraMonoflop();
+			dualRelais.setSelectedState((short)1, false);
 			cameraMonoflop = null;
 		}
 		if(isConnectedOrPending()){

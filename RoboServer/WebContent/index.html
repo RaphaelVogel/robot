@@ -48,44 +48,70 @@ div.footer {
 		/*
 		* Drive UI
 		*/
-		$( "#move" ).buttonset();
-
 		$( "#forward" ).button({icons: {primary: "ui-icon-arrowthick-1-n"}, text: false});
-		$("#forward").click(function(){
+		$("#forward").bind('touchstart mousedown', function(){
 			sendDriveRequest("forward",$( "#slider" ).slider( "value" ));
 		});
-		$( "#forwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-nw"}, text: false});
-		$("#forwardLeft").click(function(){
-			sendDriveRequest("forwardLeft",$( "#slider" ).slider( "value" ));
-		});
-		$( "#forwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-ne"}, text: false});
-		$("#forwardRight").click(function(){
-			sendDriveRequest("forwardRight",$( "#slider" ).slider( "value" ));
-		});
-		$( "#turnLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-w"}, text: false});
-		$("#turnLeft").click(function(){
-			sendDriveRequest("turnLeft",$( "#slider" ).slider( "value" ));
-		});
-		$( "#turnRight" ).button({icons: {primary: "ui-icon-arrowthick-1-e"}, text: false});
-		$("#turnRight").click(function(){
-			sendDriveRequest("turnRight",$( "#slider" ).slider( "value" ));
-		});
-		$( "#backward" ).button({icons: {primary: "ui-icon-arrowthick-1-s"}, text: false});
-		$("#backward").click(function(){
-			sendDriveRequest("backward",$( "#slider" ).slider( "value" ));
-		});
-		$( "#backwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-sw"}, text: false});
-		$("#backwardLeft").click(function(){
-			sendDriveRequest("backwardLeft",$( "#slider" ).slider( "value" ));
-		});
-		$( "#backwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-se"}, text: false});
-		$("#backwardRight").click(function(){
-			sendDriveRequest("backwardRight",$( "#slider" ).slider( "value" ));
-		});
-		$( "#stop" ).button({icons: {primary: "ui-icon-bullet"}, text: false});
-		$("#stop").click(function(){
+		$("#forward").bind('touchend mouseup', function(){
 			sendDriveRequest("stop",0);
 		});
+		
+		$( "#forwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-nw"}, text: false});
+		$("#forwardLeft").bind('touchstart mousedown',function(){
+			sendDriveRequest("forwardLeft",$( "#slider" ).slider( "value" ));
+		});
+		$("#forwardLeft").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
+		$( "#forwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-ne"}, text: false});
+		$("#forwardRight").bind('touchstart mousedown',function(){
+			sendDriveRequest("forwardRight",$( "#slider" ).slider( "value" ));
+		});
+		$("#forwardRight").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
+		$( "#turnLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-w"}, text: false});
+		$("#turnLeft").bind('touchstart mousedown',function(){
+			sendDriveRequest("turnLeft",$( "#slider" ).slider( "value" ));
+		});
+		$("#turnLeft").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
+		$( "#turnRight" ).button({icons: {primary: "ui-icon-arrowthick-1-e"}, text: false});
+		$("#turnRight").bind('touchstart mousedown',function(){
+			sendDriveRequest("turnRight",$( "#slider" ).slider( "value" ));
+		});
+		$("#turnRight").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
+		$( "#backward" ).button({icons: {primary: "ui-icon-arrowthick-1-s"}, text: false});
+		$("#backward").bind('touchstart mousedown',function(){
+			sendDriveRequest("backward",$( "#slider" ).slider( "value" ));
+		});
+		$("#backward").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
+		$( "#backwardLeft" ).button({icons: {primary: "ui-icon-arrowthick-1-sw"}, text: false});
+		$("#backwardLeft").bind('touchstart mousedown',function(){
+			sendDriveRequest("backwardLeft",$( "#slider" ).slider( "value" ));
+		});
+		$("#backwardLeft").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
+		$( "#backwardRight" ).button({icons: {primary: "ui-icon-arrowthick-1-se"}, text: false});
+		$("#backwardRight").bind('touchstart mousedown',function(){
+			sendDriveRequest("backwardRight",$( "#slider" ).slider( "value" ));
+		});
+		$("#backwardRight").bind('touchend mouseup', function(){
+			sendDriveRequest("stop",0);
+		});
+		
 		
 	    $( "#slider" ).slider({
 	    	value:3,
@@ -227,36 +253,18 @@ div.footer {
 			<p>
 				<b>Fahrbefehle</b>
 			</p>
-			<form>
-				<div id="move">
-					<input type="radio" id="forwardLeft" name="radio" /><label
-						for="forwardLeft">Halb Links</label><span
-						style="padding-left: 1.2em"></span> <input type="radio"
-						id="forward" name="radio" /><label for="forward">&nbsp;&nbsp;Vorwärts&nbsp;&nbsp;</label><span
-						style="padding-left: 1.2em"></span> <input type="radio"
-						id="forwardRight" name="radio" /><label for="forwardRight">Halb
-						Rechts</label><br>
-					<br> <input type="radio" id="turnLeft" name="radio" /><label
-						for="turnLeft">Links Drehen</label><span
-						style="padding-left: 1.2em"></span> <input type="radio" id="stop"
-						name="radio" checked="checked" /><label for="stop">&nbsp;Stop&nbsp;</label><span
-						style="padding-left: 1.2em"></span> <input type="radio"
-						id="turnRight" name="radio" /><label for="turnRight">Rechts
-						Drehen</label><br>
-					<br> <input type="radio" id="backwardLeft" name="radio" /><label
-						for="backwardLeft">Halb Links</label><span
-						style="padding-left: 1.2em"></span> <input type="radio"
-						id="backward" name="radio" /><label for="backward">&nbsp;Rückwärts&nbsp;</label><span
-						style="padding-left: 1.2em"></span> <input type="radio"
-						id="backwardRight" name="radio" /><label for="backwardRight">Halb
-						Rechts</label><br>
-					<br>
-
-					<div id="speed">Speed:</div>
-					<br>
-					<div id="slider"></div>
-				</div>
-			</form>
+			<button type="button" id="forwardLeft" style="padding:12px"></button>
+			<button type="button" id="forward" style="padding:12px"></button>
+			<button type="button" id="forwardRight" style="padding:12px"></button><br>
+			<button type="button" id="turnLeft" style="padding:12px"></button>
+			<button type="button" id="turnRight" class="btn" style="position:relative; left:52px; padding:12px"></button><br>
+			<button type="button" id="backwardLeft" style="padding:12px"></button>
+			<button type="button" id="backward" style="padding:12px"></button>
+			<button type="button" id="backwardRight" style="padding:12px"></button>
+			<br>
+			<div id="speed">Speed:</div>
+			<br>
+			<div id="slider"></div>
 		</div>
 
 		<div id="rightBox" class="right_box">
