@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import listener.DistanceReached;
+
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
 import com.tinkerforge.BrickletDistanceIR;
@@ -77,15 +79,15 @@ public class StackHandler extends Handler{
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
-		// configure the servo brick
+		// configure the drive servos (ESC) 
 		short servo0And1 = (short)((1 << 0) | (1 << 1) | (1 << 7));
 		servoBrick.setAcceleration(servo0And1, 40000);
 		
-//        // configure distance IR sensor
-//		distanceIR.setDebouncePeriod(3000);
-//		// distance smaller than 25cm
-//        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
-//        distanceIR.addDistanceReachedListener(new DistanceReached());
+        // configure distance IR sensor for collision detection
+		distanceIR.setDebouncePeriod(3000);
+		// distance smaller than 25cm
+        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
+        distanceIR.addDistanceReachedListener(new DistanceReached());
 		
         // start camera and ESC in save mode (using monoflop relais)
         driveMonoflop = new DriveMonoflop();

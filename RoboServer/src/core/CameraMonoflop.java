@@ -9,7 +9,7 @@ import com.tinkerforge.BrickletDualRelay;
 /**
  * This class starts the camera using the monoflop relais 
  * during initialization of the robot.
- * Every 2 seconds a request is send to renew the monoflop. If it 
+ * Every 3 seconds a request is send to renew the monoflop. If it 
  * fails an communication error is assumed and the relais automatically
  * switches off the camera
  */
