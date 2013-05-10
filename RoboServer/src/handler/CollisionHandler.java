@@ -1,27 +1,32 @@
 package handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import java.util.logging.Logger;
 import com.tinkerforge.BrickServo;
-import com.tinkerforge.BrickletDistanceIR;
+import core.Constants;
 
-import core.Action;
-import core.Handler;
+public class CollisionHandler extends Thread{
 
-public class CollisionHandler extends Handler {
-
-	private short servo4 = (short)4;
+	private Logger logger = Logger.getLogger(CollisionHandler.class.getName());
+	private boolean shouldRun = true;
 	
-	@Override
-	public void serve(Action action, HttpServletRequest request,
-			HttpServletResponse response) {
-		// There is currently no need to control IR Sensor over UI
+	public void stopCollisionDetection() throws Exception{
+		shouldRun = false;
+	}
+	
+	public void run(){
+		BrickServo servoBrick = StackHandler.getServoBrick();
+		while(shouldRun){
+			try {
+				servoBrick.setPosition(Constants.servo4, (short)6000);
+				servoBrick.enable(Constants.servo4);
+				Thread.sleep(400);
+				servoBrick.setPosition(Constants.servo4, (short)-6000);
+				servoBrick.enable(Constants.servo4);
+				Thread.sleep(400);
+			} catch (Exception e) {
+				logger.severe("CollisionDetection start failed");
+			}
+		}
 	}
 
-	public String startCollisionDetection(){
-		BrickServo servoBrick = StackHandler.getServoBrick();
-		
-		return "start collision detection";
-	}
 }

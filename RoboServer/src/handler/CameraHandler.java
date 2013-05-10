@@ -9,13 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.tinkerforge.BrickServo;
 
 import core.Action;
+import core.Constants;
 import core.Handler;
 
 public class CameraHandler extends Handler {
-	
-	private short servo2 = (short)2; // camera left-right
-	private short servo3 = (short)3; // camera up-down
-	private short servo2And3 = (short)((1 << 2) | (1 << 3) | (1 << 7));
 	
 	private final static short CAMERA_MAX_POSITION = 9000;
 	private final static short CAMERA_MIN_POSITION = -9000;
@@ -47,8 +44,8 @@ public class CameraHandler extends Handler {
 	
 	public String initCamera() throws Exception{
 		BrickServo servoBrick = StackHandler.getServoBrick();
-		servoBrick.setDegree(servo2, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
-		servoBrick.setDegree(servo3, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
+		servoBrick.setDegree(Constants.servo2, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
+		servoBrick.setDegree(Constants.servo3, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
 		center();
 		return "Camera initialized";
 	}
@@ -59,8 +56,8 @@ public class CameraHandler extends Handler {
 			return "Camera cannot move further left";
 		}
 		currentLeftRightCameraPosition += DIRECTION_INCREMENT;
-		servoBrick.setPosition(servo2, currentLeftRightCameraPosition);
-        servoBrick.enable(servo2);
+		servoBrick.setPosition(Constants.servo2, currentLeftRightCameraPosition);
+        servoBrick.enable(Constants.servo2);
 		return "Move camera left";
 	}
 
@@ -68,8 +65,8 @@ public class CameraHandler extends Handler {
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		currentLeftRightCameraPosition = 0;
 		currentUpDownCameraPosition = 0;
-		servoBrick.setPosition(servo2And3, (short)0);
-        servoBrick.enable(servo2And3);
+		servoBrick.setPosition(Constants.servo2And3, (short)0);
+        servoBrick.enable(Constants.servo2And3);
 		return "Center camera";
 	}
 	
@@ -79,8 +76,8 @@ public class CameraHandler extends Handler {
 			return "Camera cannot move further right";
 		}
 		currentLeftRightCameraPosition -= DIRECTION_INCREMENT;
-		servoBrick.setPosition(servo2, currentLeftRightCameraPosition);
-        servoBrick.enable(servo2);
+		servoBrick.setPosition(Constants.servo2, currentLeftRightCameraPosition);
+        servoBrick.enable(Constants.servo2);
 		return "Move camera right";
 	}
 
@@ -90,8 +87,8 @@ public class CameraHandler extends Handler {
 			return "Camera cannot move further down";
 		}
 		currentUpDownCameraPosition -= DIRECTION_INCREMENT;
-		servoBrick.setPosition(servo3, currentUpDownCameraPosition);
-        servoBrick.enable(servo3);
+		servoBrick.setPosition(Constants.servo3, currentUpDownCameraPosition);
+        servoBrick.enable(Constants.servo3);
 		return "Move camera down";
 	}
 	
@@ -101,8 +98,8 @@ public class CameraHandler extends Handler {
 			return "Camera cannot move further up";
 		}
 		currentUpDownCameraPosition += DIRECTION_INCREMENT;
-		servoBrick.setPosition(servo3, currentUpDownCameraPosition);
-        servoBrick.enable(servo3);
+		servoBrick.setPosition(Constants.servo3, currentUpDownCameraPosition);
+        servoBrick.enable(Constants.servo3);
 		return "Move camera up";
 	}
 }

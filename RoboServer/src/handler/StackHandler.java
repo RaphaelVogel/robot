@@ -18,6 +18,7 @@ import com.tinkerforge.IPConnection;
 
 import core.Action;
 import core.CameraMonoflop;
+import core.Constants;
 import core.DriveMonoflop;
 import core.Handler;
 
@@ -80,12 +81,18 @@ public class StackHandler extends Handler{
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
 		// configure the drive servos (ESC) 
-		short servo0And1 = (short)((1 << 0) | (1 << 1) | (1 << 7));
-		servoBrick.setAcceleration(servo0And1, 40000);
+		servoBrick.setAcceleration(Constants.servo0And1, 40000);
+		
+		// configure the camera servos
+		servoBrick.setVelocity(Constants.servo2And3, 15000);
+		
+		// configure the collision detection servo
+		servoBrick.setPosition(Constants.servo4, (short)0);
+		servoBrick.enable(Constants.servo4);
 		
         // configure distance IR sensor for collision detection
-		distanceIR.setDebouncePeriod(3000);
-		// distance smaller than 25cm
+		distanceIR.setDebouncePeriod(5000);
+		// distance smaller than 20cm
         distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
         distanceIR.addDistanceReachedListener(new DistanceReached());
 		
