@@ -92,8 +92,8 @@ public class StackHandler extends Handler{
 		
         // configure distance IR sensor for collision detection
 		distanceIR.setDebouncePeriod(5000);
-		// distance smaller than 20cm
-        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)250, (short)0);
+		// distance smaller than 26cm
+        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)260, (short)0);
         distanceIR.addDistanceReachedListener(new DistanceReached());
 		
         // start camera and ESC in save mode (using monoflop relais)
