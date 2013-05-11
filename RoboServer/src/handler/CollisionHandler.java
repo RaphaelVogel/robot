@@ -17,10 +17,10 @@ public class CollisionHandler extends Thread{
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		while(shouldRun){
 			try {
-				servoBrick.setPosition(Constants.servo4, (short)6000);
+				servoBrick.setPosition(Constants.servo4, (short)6500);
 				servoBrick.enable(Constants.servo4);
 				Thread.sleep(400);
-				servoBrick.setPosition(Constants.servo4, (short)-6000);
+				servoBrick.setPosition(Constants.servo4, (short)-6500);
 				servoBrick.enable(Constants.servo4);
 				Thread.sleep(400);
 			} catch (Exception e) {
