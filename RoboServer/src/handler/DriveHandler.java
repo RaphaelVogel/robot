@@ -16,7 +16,6 @@ public class DriveHandler extends Handler{
 	private short speed;
 	
 	private final static short SPEED_FACTOR = 900;
-	private CollisionHandler collisionHandler;
 	
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /Drive/<direction>/<speed>
@@ -45,9 +44,6 @@ public class DriveHandler extends Handler{
 	}
 	
 	public String stop() throws Exception{
-		if(collisionHandler != null){
-			collisionHandler.stopCollisionDetection();
-		}
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo0And1, (short)0);
         servoBrick.enable(Constants.servo0And1);
@@ -55,8 +51,6 @@ public class DriveHandler extends Handler{
 	}
 	
 	public String forward() throws Exception{
-		collisionHandler = new CollisionHandler();
-		collisionHandler.start();
 		BrickServo servoBrick = StackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed * -1));
 		servoBrick.setPosition(Constants.servo0, (short)((speed+130) * -1));

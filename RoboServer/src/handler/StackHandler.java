@@ -7,11 +7,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import listener.DistanceReached;
-
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickServo;
-import com.tinkerforge.BrickletDistanceIR;
 import com.tinkerforge.BrickletDualRelay;
 import com.tinkerforge.BrickletIndustrialQuadRelay;
 import com.tinkerforge.IPConnection;
@@ -30,13 +27,11 @@ public class StackHandler extends Handler{
 	private final String MASTER_UID = "6rkQPB";
 	private final String SERVO_UID = "6QFwhz";
 	private final String QUAD_RELAIS_UID = "cts";
-	private final String DISTANCE_IR_UID = "cXb";
 	private final String DUAL_RELAY_UID = "bV3";
 	
 	private static BrickMaster masterBrick;
 	private static BrickServo servoBrick;
 	private static BrickletIndustrialQuadRelay quadRelais;
-	private static BrickletDistanceIR distanceIR;
 	private static BrickletDualRelay dualRelais;
 	
 	private static DriveMonoflop driveMonoflop;
@@ -74,7 +69,6 @@ public class StackHandler extends Handler{
 		servoBrick = new BrickServo(SERVO_UID, ipConnection);
 		quadRelais = new BrickletIndustrialQuadRelay(QUAD_RELAIS_UID, ipConnection);
 		dualRelais = new BrickletDualRelay(DUAL_RELAY_UID, ipConnection);
-		distanceIR = new BrickletDistanceIR(DISTANCE_IR_UID, ipConnection);
 		ipConnection.connect(HOST, PORT);
 		
 		// set the Power Mode of WIFI to "Low Power"
@@ -84,17 +78,7 @@ public class StackHandler extends Handler{
 		servoBrick.setAcceleration(Constants.servo0And1, 40000);
 		
 		// configure the camera servos
-		servoBrick.setVelocity(Constants.servo2And3, 15000);
-		
-		// configure the collision detection servo
-		servoBrick.setPosition(Constants.servo4, (short)0);
-		servoBrick.enable(Constants.servo4);
-		
-        // configure distance IR sensor for collision detection
-		distanceIR.setDebouncePeriod(5000);
-		// distance smaller than 26cm
-        distanceIR.setDistanceCallbackThreshold(BrickletDistanceIR.THRESHOLD_OPTION_SMALLER, (short)260, (short)0);
-        distanceIR.addDistanceReachedListener(new DistanceReached());
+		servoBrick.setVelocity(Constants.servo2And3, 20000);
 		
         // start camera and ESC in save mode (using monoflop relais)
         driveMonoflop = new DriveMonoflop();

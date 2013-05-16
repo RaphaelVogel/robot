@@ -12,7 +12,4 @@ public interface Constants {
 	public short servo3 = (short)3; // camera up-down
 	public short servo2And3 = (short)((1 << 2) | (1 << 3) | (1 << 7));
 	
-	// Collision servo
-	public short servo4 = (short)4;
-	
 }
