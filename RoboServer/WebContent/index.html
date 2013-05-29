@@ -182,6 +182,7 @@ div.footer {
 		function sendStackCommand(command){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Stack/"+command,
+				  dataType: "text",
 				  success: function(message){
 					  $("#status").css("color", "black");
 					  $("#status").val(message);
@@ -196,6 +197,7 @@ div.footer {
 		function sendDriveRequest(direction, speed){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Drive/"+direction+"/"+speed,
+				  dataType: "text",
 				  success: function(message){
 					  $("#messages").css("color", "black");
 					  $("#messages").val(message);
@@ -210,6 +212,7 @@ div.footer {
 		function sendCameraRequest(direction){
 			$.ajax({
 				  url: "/RoboServer/dispatch/Camera/"+direction,
+				  dataType: "text",
 				  success: function(message){
 					  $("#messages").css("color", "black");
 					  $("#messages").val(message);

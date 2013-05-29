@@ -26,7 +26,7 @@ public class CameraHandler extends Handler {
 		// /Camera/<direction>
 		List<String> parameters = action.getParameters();
 		if(parameters.size() != 1){
-			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Camera/<direction>", response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Camera/<direction>", response);
 			return;
 		}
 		String direction = parameters.get(0);
@@ -35,10 +35,10 @@ public class CameraHandler extends Handler {
 			Method method = this.getClass().getDeclaredMethod(direction);
 			resultString = method.invoke(this);
 		} catch (Exception e) {
-			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not call method Camera."+direction, response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not call method Camera."+direction, response);
 			return;
 		}
-		sendResponse(HttpServletResponse.SC_OK, (String)resultString, response);
+		sendTextResponse(HttpServletResponse.SC_OK, (String)resultString, response);
 		return;
 	}
 	

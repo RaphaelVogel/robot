@@ -21,12 +21,12 @@ public class DriveHandler extends Handler{
 		// /Drive/<direction>/<speed>
 		List<String> parameters = action.getParameters();
 		if(parameters.size() != 2){
-			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Drive/<direction>/<speed>", response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Drive/<direction>/<speed>", response);
 			return;
 		}
 		int inputSpeed = Integer.valueOf(parameters.get(1));
 		if(inputSpeed > 10){
-			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Speed is to high. Maximum of 10 allowed", response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Speed is to high. Maximum of 10 allowed", response);
 			return;
 		}
 		this.speed = (short)(inputSpeed*SPEED_FACTOR);
@@ -36,10 +36,10 @@ public class DriveHandler extends Handler{
 			Method method = this.getClass().getDeclaredMethod(direction);
 			resultString = method.invoke(this);
 		} catch (Exception e) {
-			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not call method Drive."+direction, response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Could not call method Drive."+direction, response);
 			return;
 		}
-		sendResponse(HttpServletResponse.SC_OK, (String)resultString, response);
+		sendTextResponse(HttpServletResponse.SC_OK, (String)resultString, response);
 		return;
 	}
 	

@@ -12,9 +12,10 @@ public abstract class Handler {
 	
 	public abstract void serve(Action action, HttpServletRequest request, HttpServletResponse response);
 	
-	public void sendResponse(int statusCode, String message, HttpServletResponse response){
+	public void sendTextResponse(int statusCode, String message, HttpServletResponse response){
 		try {
 			response.setStatus(statusCode);
+			response.setContentType("text/plain");
 			response.getWriter().println(message);
 		} catch (IOException e) {
 			logger.severe(e.toString());

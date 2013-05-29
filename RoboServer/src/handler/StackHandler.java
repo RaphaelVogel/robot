@@ -43,7 +43,7 @@ public class StackHandler extends Handler{
 		// /Stack/<command>
 		List<String> parameters = action.getParameters();
 		if(parameters.size() != 1){
-			sendResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Stack/<command>", response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Stack/<command>", response);
 			return;
 		}
 		String command = parameters.get(0);
@@ -53,10 +53,10 @@ public class StackHandler extends Handler{
 			resultString = method.invoke(this);
 		} catch (Exception e) {
 			logger.severe(e.getMessage());
-			sendResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method Stack."+command, response);
+			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method Stack."+command, response);
 			return;
 		}
-		sendResponse(HttpServletResponse.SC_OK, (String)resultString, response);
+		sendTextResponse(HttpServletResponse.SC_OK, (String)resultString, response);
 		return;
 	}
 	
