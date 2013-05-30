@@ -2,6 +2,7 @@ package handler;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class StackHandler extends Handler{
 			Method method = this.getClass().getDeclaredMethod(command);
 			resultString = method.invoke(this);
 		} catch (Exception e) {
-			logger.severe(e.getMessage());
+			logger.log(Level.SEVERE, "Error in StackHandler: ", e);
 			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method Stack."+command, response);
 			return;
 		}

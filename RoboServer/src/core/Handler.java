@@ -1,6 +1,7 @@
 package core;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ public abstract class Handler {
 			response.setContentType("text/plain");
 			response.getWriter().println(message);
 		} catch (IOException e) {
-			logger.severe(e.toString());
+			logger.log(Level.SEVERE, "Could not send response: ", e);
 		}
 	}
 }

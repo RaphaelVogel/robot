@@ -2,6 +2,7 @@ package core;
 
 import handler.StackHandler;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.tinkerforge.BrickletIndustrialQuadRelay;
@@ -30,7 +31,7 @@ public class DriveMonoflop extends Thread {
 				relais.setMonoflop((1 << 0) | (1 << 1), (1 << 0) | (1 << 1), 4000);
 				DriveMonoflop.sleep(3000);
 			} catch (Exception e) {
-				logger.severe("Drive Monoflop call failed");
+				logger.log(Level.SEVERE, "Drive Monoflop call failed: ", e);
 			}
 		}
 	}

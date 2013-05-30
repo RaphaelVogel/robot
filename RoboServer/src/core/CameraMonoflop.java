@@ -2,6 +2,7 @@ package core;
 
 import handler.StackHandler;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.tinkerforge.BrickletDualRelay;
@@ -30,7 +31,7 @@ public class CameraMonoflop extends Thread {
 				relais.setMonoflop((short)1, true, 4000);
 				CameraMonoflop.sleep(3000);
 			} catch (Exception e) {
-				logger.severe("Camera Monoflop call failed");
+				logger.log(Level.SEVERE, "Camera Monoflop call failed: ", e);
 			}
 		}
 	}
