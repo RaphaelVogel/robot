@@ -71,6 +71,7 @@ public class StackHandler extends Handler{
 		quadRelais = new BrickletIndustrialQuadRelay(QUAD_RELAIS_UID, ipConnection);
 		dualRelais = new BrickletDualRelay(DUAL_RELAY_UID, ipConnection);
 		ipConnection.connect(HOST, PORT);
+		logger.log(Level.INFO, "New IPConnection connection established");
 		
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
