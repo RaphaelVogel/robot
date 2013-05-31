@@ -4,21 +4,21 @@ import java.util.List;
 
 public class Action {
 
-	private String verb;
+	private String handler;
 	private List<String> parameters = new ArrayList<String>();
 	
 	public static Action create(String path){
 		Action action = new Action();
 		String[] split = path.substring(1).split("/");
-		action.setVerb(split[0]);
+		action.setHandler(split[0]);
 		for(int i=1; i<split.length; i++){
 			action.addParameter(split[i]);
 		}
 		return action;
 	}
 	
-	public String getVerb() {
-		return verb;
+	public String getHandler() {
+		return handler;
 	}
 	
 	public List<String> getParameters() {
@@ -29,8 +29,8 @@ public class Action {
 		parameters.add(parameter);
 	}
 	
-	private void setVerb(String verb){
-		this.verb = verb;
+	private void setHandler(String handler){
+		this.handler = handler;
 	}
 
 }

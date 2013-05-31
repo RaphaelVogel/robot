@@ -53,7 +53,7 @@ public class StackHandler extends Handler{
 			Method method = this.getClass().getDeclaredMethod(command);
 			resultString = method.invoke(this);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Error in StackHandler: ", e);
+			logger.log(Level.SEVERE, "Error in method StackHandler."+command, e);
 			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method Stack."+command, response);
 			return;
 		}
@@ -63,7 +63,7 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String initialize() throws Exception{
-		cleanConnectionAndMonoflops();
+		closeConnectionAndMonoflops();
 		
 		ipConnection = new IPConnection();
 		masterBrick = new BrickMaster(MASTER_UID, ipConnection);
@@ -98,7 +98,7 @@ public class StackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
-		cleanConnectionAndMonoflops();
+		closeConnectionAndMonoflops();
 		return "Closed connection to stack";
 	}
 
@@ -135,7 +135,7 @@ public class StackHandler extends Handler{
 		return cameraMonoflop;
 	}
 	
-	private void cleanConnectionAndMonoflops() throws Exception {
+	private void closeConnectionAndMonoflops() throws Exception {
 		if(driveMonoflop != null){
 			driveMonoflop.stopDriveMonoflop();
 			quadRelais.setValue((0 << 0) | (0 << 1));
