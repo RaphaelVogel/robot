@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.tinkerforge.IPConnection;
+
 public abstract class Handler {
 	
 	private Logger logger = Logger.getLogger(Handler.class.getName());
@@ -21,5 +23,13 @@ public abstract class Handler {
 		} catch (IOException e) {
 			logger.log(Level.SEVERE, "Could not send response: ", e);
 		}
+	}
+	
+	public boolean isConnectedOrPending(IPConnection ipConnection){
+		if(ipConnection == null){
+			return false;
+		}
+		return (ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_CONNECTED ||
+				ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_PENDING);
 	}
 }

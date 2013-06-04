@@ -41,10 +41,10 @@ public class RoboStackHandler extends Handler{
 	private IPConnection ipConnection;
 
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
-		// /Stack/<command>
+		// /RoboStack/<command>
 		List<String> parameters = action.getParameters();
 		if(parameters.size() != 1){
-			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /Stack/<command>", response);
+			sendTextResponse(HttpServletResponse.SC_BAD_REQUEST, "Wrong URL format, use /RoboStack/<command>", response);
 			return;
 		}
 		String command = parameters.get(0);
@@ -53,8 +53,8 @@ public class RoboStackHandler extends Handler{
 			Method method = this.getClass().getDeclaredMethod(command);
 			resultString = method.invoke(this);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Error in method StackHandler."+command, e);
-			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method Stack."+command, response);
+			logger.log(Level.SEVERE, "Error in method RoboStackHandler."+command, e);
+			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method RoboStack."+command, response);
 			return;
 		}
 		sendTextResponse(HttpServletResponse.SC_OK, (String)resultString, response);
@@ -71,7 +71,7 @@ public class RoboStackHandler extends Handler{
 		quadRelais = new BrickletIndustrialQuadRelay(QUAD_RELAIS_UID, ipConnection);
 		dualRelais = new BrickletDualRelay(DUAL_RELAY_UID, ipConnection);
 		ipConnection.connect(HOST, PORT);
-		logger.log(Level.INFO, "New IPConnection connection established");
+		logger.log(Level.INFO, "New IPConnection to robo established");
 		
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
@@ -94,13 +94,13 @@ public class RoboStackHandler extends Handler{
         CameraHandler cameraHandler = new CameraHandler();
         cameraHandler.center();
         
-		return "Hardware initialized";
+		return "Hardware for robo initialized";
 	}
 	
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
 		closeConnectionAndMonoflops();
-		return "Closed connection to stack";
+		return "Closed connection to robo";
 	}
 
 	@SuppressWarnings("unused")
@@ -109,33 +109,9 @@ public class RoboStackHandler extends Handler{
 		int current;
 		voltage = masterBrick.getStackVoltage();
 		current = masterBrick.getStackCurrent();
-		return "Voltage: " + voltage + " mV | Current: " + current + " mA";
+		return "Robo voltage: " + voltage + " mV | Robo current: " + current + " mA";
 	}
 
-	public static BrickServo getServoBrick(){
-		return servoBrick;
-	}
-	
-	public static BrickMaster getMasterBrick(){
-		return masterBrick;
-	}
-	
-	public static BrickletIndustrialQuadRelay getQuadRelaisBricklet(){
-		return quadRelais;
-	}
-
-	public static BrickletDualRelay getDualRelaisBricklet(){
-		return dualRelais;
-	}
-	
-	public static DriveMonoflop getDriveMonoflop(){
-		return driveMonoflop;
-	}
-	
-	public static CameraMonoflop getCameraMonoflop(){
-		return cameraMonoflop;
-	}
-	
 	private void closeConnectionAndMonoflops() throws Exception {
 		if(driveMonoflop != null){
 			driveMonoflop.stopDriveMonoflop();
@@ -147,17 +123,23 @@ public class RoboStackHandler extends Handler{
 			dualRelais.setSelectedState((short)1, false);
 			cameraMonoflop = null;
 		}
-		if(isConnectedOrPending()){
+		if(isConnectedOrPending(ipConnection)){
 			ipConnection.disconnect();
 			ipConnection = null;
 		}
 	}
+
 	
-	private boolean isConnectedOrPending(){
-		if(ipConnection == null){
-			return false;
-		}
-		return (ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_CONNECTED ||
-				ipConnection.getConnectionState() == IPConnection.CONNECTION_STATE_PENDING);
+	public static BrickServo getServoBrick(){
+		return servoBrick;
 	}
+		
+	public static BrickletIndustrialQuadRelay getQuadRelaisBricklet(){
+		return quadRelais;
+	}
+
+	public static BrickletDualRelay getDualRelaisBricklet(){
+		return dualRelais;
+	}	
+
 }
