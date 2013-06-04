@@ -43,7 +43,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	public String initCamera() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setDegree(Constants.servo2, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
 		servoBrick.setDegree(Constants.servo3, CAMERA_MIN_POSITION, CAMERA_MAX_POSITION);
 		center();
@@ -51,7 +51,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	public String left() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		if(currentLeftRightCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further left";
 		}
@@ -62,7 +62,7 @@ public class CameraHandler extends Handler {
 	}
 
 	public String center() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		currentLeftRightCameraPosition = 0;
 		currentUpDownCameraPosition = 0;
 		servoBrick.setPosition(Constants.servo2And3, (short)0);
@@ -71,7 +71,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	public String right() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		if(currentLeftRightCameraPosition-DIRECTION_INCREMENT < CAMERA_MIN_POSITION){
 			return "Camera cannot move further right";
 		}
@@ -82,7 +82,7 @@ public class CameraHandler extends Handler {
 	}
 
 	public String down() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		if(currentUpDownCameraPosition-DIRECTION_INCREMENT < CAMERA_MIN_POSITION){
 			return "Camera cannot move further down";
 		}
@@ -93,7 +93,7 @@ public class CameraHandler extends Handler {
 	}
 	
 	public String up() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		if(currentUpDownCameraPosition+DIRECTION_INCREMENT > CAMERA_MAX_POSITION){
 			return "Camera cannot move further up";
 		}

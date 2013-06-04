@@ -44,14 +44,14 @@ public class DriveHandler extends Handler{
 	}
 	
 	public String stop() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo0And1, (short)0);
         servoBrick.enable(Constants.servo0And1);
 		return "Robot stopped";
 	}
 	
 	public String forward() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed * -1));
 		servoBrick.setPosition(Constants.servo0, (short)((speed+130) * -1));
         servoBrick.enable(Constants.servo0And1);
@@ -59,7 +59,7 @@ public class DriveHandler extends Handler{
 	}
 	
 	public String backward() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed));
 		servoBrick.setPosition(Constants.servo0, (short)(speed-190));
         servoBrick.enable(Constants.servo0And1);
@@ -67,42 +67,42 @@ public class DriveHandler extends Handler{
 	}
 	
 	public String turnLeft() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo0, (short)(speed * -1));
 		servoBrick.setPosition(Constants.servo1, speed);
 		return "Turn left with speed " + speed/SPEED_FACTOR;
 	}
 	
 	public String turnRight() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed * -1));
 		servoBrick.setPosition(Constants.servo0, speed);
 		return "Turn right with speed " + speed/SPEED_FACTOR;
 	}
 	
 	public String backwardLeft() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed/1.6));
 		servoBrick.setPosition(Constants.servo0, speed);
 		return "Move backward left with speed " + speed/SPEED_FACTOR;
 	}
 	
 	public String backwardRight() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, speed);
 		servoBrick.setPosition(Constants.servo0, (short)(speed/1.6));
 		return "Move backward right with speed " + speed/SPEED_FACTOR;
 	}
 	
 	public String forwardLeft() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed * -1/1.6));
 		servoBrick.setPosition(Constants.servo0, (short)(speed * -1));
 		return "Move forward left with speed " + speed/SPEED_FACTOR;
 	}
 	
 	public String forwardRight() throws Exception{
-		BrickServo servoBrick = StackHandler.getServoBrick();
+		BrickServo servoBrick = RoboStackHandler.getServoBrick();
 		servoBrick.setPosition(Constants.servo1, (short)(speed * -1));
 		servoBrick.setPosition(Constants.servo0, (short)(speed * -1/1.6));
 		return "Move forward right with speed " + speed/SPEED_FACTOR;

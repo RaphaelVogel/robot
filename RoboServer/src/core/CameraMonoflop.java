@@ -1,6 +1,6 @@
 package core;
 
-import handler.StackHandler;
+import handler.RoboStackHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +25,7 @@ public class CameraMonoflop extends Thread {
 	}
 	
 	public void run(){
-		BrickletDualRelay relais = StackHandler.getDualRelaisBricklet();
+		BrickletDualRelay relais = RoboStackHandler.getDualRelaisBricklet();
 		while(shouldRun){
 			try {
 				relais.setMonoflop((short)1, true, 4000);

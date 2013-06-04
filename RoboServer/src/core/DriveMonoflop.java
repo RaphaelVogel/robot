@@ -1,6 +1,6 @@
 package core;
 
-import handler.StackHandler;
+import handler.RoboStackHandler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +25,7 @@ public class DriveMonoflop extends Thread {
 	}
 	
 	public void run(){
-		BrickletIndustrialQuadRelay relais = StackHandler.getQuadRelaisBricklet();
+		BrickletIndustrialQuadRelay relais = RoboStackHandler.getQuadRelaisBricklet();
 		while(shouldRun){
 			try {
 				relais.setMonoflop((1 << 0) | (1 << 1), (1 << 0) | (1 << 1), 4000);

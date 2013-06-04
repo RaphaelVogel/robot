@@ -165,7 +165,7 @@ div.footer {
 		* Update status button
 		*/
 		$( "#updateStatus" ).click(function(){
-			sendStackCommand("getVoltAndAmpere");
+			sendRoboStackCommand("getVoltAndAmpere");
 		});
 		
 		/*
@@ -173,15 +173,15 @@ div.footer {
 		*/
 		$( "#disconnect" ).click(function(){
 			$('#webcam').attr('src','img/robo.jpg');
-			sendStackCommand("cleanUp");
+			sendRoboStackCommand("cleanUp");
 		});
 		
 		/* -------------------------------------------------------------
 		*  Ajax calls
 		*  -------------------------------------------------------------*/
-		function sendStackCommand(command){
+		function sendRoboStackCommand(command){
 			$.ajax({
-				  url: "/RoboServer/dispatch/Stack/"+command,
+				  url: "/RoboServer/dispatch/RoboStack/"+command,
 				  dataType: "text",
 				  success: function(message){
 					  $("#status").css("color", "black");
@@ -224,8 +224,8 @@ div.footer {
 				});
 		}
 		
-		// initialize Stack
-		sendStackCommand("initialize");
+		// initialize RoboStack
+		sendRoboStackCommand("initialize");
 		// first show robo picture instead of live stream‚
 		$('#webcam').attr('src','img/robo.jpg');
 		$( "#dialog" ).dialog( "open" );

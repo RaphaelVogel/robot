@@ -20,9 +20,9 @@ import core.Constants;
 import core.DriveMonoflop;
 import core.Handler;
 
-public class StackHandler extends Handler{
+public class RoboStackHandler extends Handler{
 
-	private Logger logger = Logger.getLogger(StackHandler.class.getName());
+	private Logger logger = Logger.getLogger(RoboStackHandler.class.getName());
 	private final String HOST = "robo";
 	private final int PORT = 4223;
 	private final String MASTER_UID = "6rkQPB";
