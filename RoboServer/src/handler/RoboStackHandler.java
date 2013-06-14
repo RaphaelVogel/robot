@@ -54,7 +54,7 @@ public class RoboStackHandler extends Handler{
 			resultString = method.invoke(this);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error in method RoboStackHandler."+command, e);
-			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method RoboStack."+command, response);
+			sendTextResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error in method RoboStackHandler."+command, response);
 			return;
 		}
 		sendTextResponse(HttpServletResponse.SC_OK, (String)resultString, response);
@@ -100,7 +100,7 @@ public class RoboStackHandler extends Handler{
 	@SuppressWarnings("unused")
 	private String cleanUp() throws Exception{
 		closeConnectionAndMonoflops();
-		return "Closed connection to robo";
+		return "Closed connection to Robo Stack";
 	}
 
 	@SuppressWarnings("unused")
@@ -109,7 +109,7 @@ public class RoboStackHandler extends Handler{
 		int current;
 		voltage = masterBrick.getStackVoltage();
 		current = masterBrick.getStackCurrent();
-		return "Robo voltage: " + voltage + " mV | Robo current: " + current + " mA";
+		return "Robo Stack Voltage: " + voltage + " mV | Current: " + current + " mA";
 	}
 
 	private void closeConnectionAndMonoflops() throws Exception {
@@ -129,7 +129,6 @@ public class RoboStackHandler extends Handler{
 		}
 	}
 
-	
 	public static BrickServo getServoBrick(){
 		return servoBrick;
 	}
