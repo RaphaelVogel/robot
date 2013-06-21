@@ -97,8 +97,7 @@ public class RoboStackHandler extends Handler{
 		return "Hardware for robo initialized";
 	}
 	
-	@SuppressWarnings("unused")
-	private String cleanUp() throws Exception{
+	public String cleanUp() throws Exception{
 		closeConnectionAndMonoflops();
 		return "Closed connection to Robo Stack";
 	}

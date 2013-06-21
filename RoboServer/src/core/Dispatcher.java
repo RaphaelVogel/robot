@@ -1,5 +1,7 @@
 package core;
 
+import handler.RoboStackHandler;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Map;
@@ -38,4 +40,7 @@ public class Dispatcher extends HttpServlet {
 		}
 	}
 
+	public static RoboStackHandler getRoboStackHandler(){
+		return (RoboStackHandler)handlers.get("RoboStack");
+	}
 }

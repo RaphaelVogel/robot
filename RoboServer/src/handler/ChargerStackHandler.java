@@ -15,6 +15,7 @@ import com.tinkerforge.IPConnection;
 
 import core.Action;
 import core.Constants;
+import core.Dispatcher;
 import core.Handler;
 import core.Loader;
 
@@ -81,6 +82,7 @@ public class ChargerStackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String roboOff() throws Exception{
+		Dispatcher.getRoboStackHandler().cleanUp();
 		servoBrick.setPosition(Constants.servo0, (short)9000);
 		servoBrick.enable(Constants.servo0);
 		return "Switched Robo off";
