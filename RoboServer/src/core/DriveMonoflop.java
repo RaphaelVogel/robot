@@ -28,8 +28,8 @@ public class DriveMonoflop extends Thread {
 		BrickletIndustrialQuadRelay relais = RoboStackHandler.getQuadRelaisBricklet();
 		while(shouldRun){
 			try {
-				relais.setMonoflop((1 << 0) | (1 << 1), (1 << 0) | (1 << 1), 4000);
-				DriveMonoflop.sleep(3000);
+				relais.setMonoflop((1 << 0) | (1 << 1), (1 << 0) | (1 << 1), 8000);
+				DriveMonoflop.sleep(5000);
 			} catch (Exception e) {
 				logger.log(Level.SEVERE, "Drive Monoflop call failed: ", e);
 			}

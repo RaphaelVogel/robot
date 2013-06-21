@@ -28,8 +28,8 @@ public class CameraMonoflop extends Thread {
 		BrickletDualRelay relais = RoboStackHandler.getDualRelaisBricklet();
 		while(shouldRun){
 			try {
-				relais.setMonoflop((short)1, true, 4000);
-				CameraMonoflop.sleep(3000);
+				relais.setMonoflop((short)1, true, 8000);
+				CameraMonoflop.sleep(5000);
 			} catch (Exception e) {
 				logger.log(Level.SEVERE, "Camera Monoflop call failed: ", e);
 			}

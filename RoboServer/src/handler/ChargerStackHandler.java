@@ -9,22 +9,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tinkerforge.BrickMaster;
+import com.tinkerforge.BrickServo;
+import com.tinkerforge.BrickletDualRelay;
 import com.tinkerforge.IPConnection;
 
 import core.Action;
+import core.Constants;
 import core.Handler;
+import core.Loader;
 
 public class ChargerStackHandler extends Handler{
 
 	private Logger logger = Logger.getLogger(ChargerStackHandler.class.getName());
 	private final String HOST = "charger";
 	private final int PORT = 4223;
-	private final String MASTER_UID = "";
+	private final String MASTER_UID = "6esCZX";
+	private final String DUAL_RELAIS_UID = "bVY";
+	private final String SERVO_UID = "6JqqH8";
 	
 	private static BrickMaster masterBrick;
+	private static BrickServo servoBrick;
+	private static BrickletDualRelay dualRelais;
 	
 	private IPConnection ipConnection;
-
+	private Loader loader;
+	
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /ChargerStack/<command>
 		List<String> parameters = action.getParameters();
@@ -48,40 +57,73 @@ public class ChargerStackHandler extends Handler{
 	
 	@SuppressWarnings("unused")
 	private String initialize() throws Exception{
-		closeConnection();
+		closeConnectionAndLoader();
 		
 		ipConnection = new IPConnection();
 		masterBrick = new BrickMaster(MASTER_UID, ipConnection);
+		servoBrick = new BrickServo(SERVO_UID, ipConnection);
+		dualRelais = new BrickletDualRelay(DUAL_RELAIS_UID, ipConnection);
+		
 		ipConnection.connect(HOST, PORT);
 		logger.log(Level.INFO, "New IPConnection to charger established");
 		
 		// set the Power Mode of WIFI to "Low Power"
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
         
-		return "Hardware to charger  initialized";
+		// initialize magnet servo
+		servoBrick.setPulseWidth(Constants.servo0, 800, 2100);
+		servoBrick.setVelocity(Constants.servo0, 20000);
+		servoBrick.setPosition(Constants.servo0, (short)-9000);
+		servoBrick.enable(Constants.servo0);
+		
+		return "Hardware to charger initialized";
 	}
 	
 	@SuppressWarnings("unused")
-	private String cleanUp() throws Exception{
-		closeConnection();
-		return "Closed connection to charger";
+	private String roboOff() throws Exception{
+		servoBrick.setPosition(Constants.servo0, (short)9000);
+		servoBrick.enable(Constants.servo0);
+		return "Switched Robo off";
 	}
-
+	
 	@SuppressWarnings("unused")
-	private String getVoltAndAmpere() throws Exception{
-		int voltage;
-		int current;
-		voltage = masterBrick.getStackVoltage();
-		current = masterBrick.getStackCurrent();
-		return "Charger voltage: " + voltage + " mV | Charger current: " + current + " mA";
+	private String roboOn() throws Exception{
+		servoBrick.setPosition(Constants.servo0, (short)-9000);
+		servoBrick.enable(Constants.servo0);
+		return "Switched Robo on";
 	}
 	
+	@SuppressWarnings("unused")
+	private String startCharge() throws Exception{
+		if(loader != null){
+			loader.stopLoading();
+		}
+		loader = new Loader();
+		loader.start();
+		return "Start Charging";
+	}
 	
-	private void closeConnection() throws Exception {
+	@SuppressWarnings("unused")
+	private String stopCharge() throws Exception{
+		return "Stop Charging";
+	}
+	
+	private void closeConnectionAndLoader() throws Exception {
+		if(loader != null){
+			loader.stopLoading();
+			loader = null;
+		}
 		if(isConnectedOrPending(ipConnection)){
 			ipConnection.disconnect();
 			ipConnection = null;
 		}
 	}
 	
+	public static BrickServo getServoBrick(){
+		return servoBrick;
+	}
+	
+	public static BrickletDualRelay getDualRelaisBricklet(){
+		return dualRelais;
+	}
 }

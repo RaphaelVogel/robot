@@ -115,11 +115,14 @@ div.footer {
 		
 	    $( "#slider" ).slider({
 	    	value:3,
-	        min: 3,
+	        min: 2,
 	        max: 5,
 	        step: 1,
 	        slide: function( event, ui ) {
 	        	var display;
+	        	if(ui.value === 2){
+	        		display = "Ladefahrt";
+	        	}
 	        	if(ui.value === 3){
 	        		display = "langsam";
 	        	}
@@ -176,6 +179,26 @@ div.footer {
 			sendRoboStackCommand("cleanUp");
 		});
 		
+		/*
+		* Robo on/off
+		*/
+		$( "#roboOff" ).click(function(){
+			sendChargerStackCommand("roboOff");
+		});
+		$( "#roboOn" ).click(function(){
+			sendChargerStackCommand("roboOn");
+		});
+		
+		/*
+		* Start/Stop Charging
+		*/
+		$( "#startCharge" ).click(function(){
+			sendChargerStackCommand("startCharge");
+		});
+		$( "#stopCharge" ).click(function(){
+			sendChargerStackCommand("stopCharge");
+		});
+		
 		/* -------------------------------------------------------------
 		*  Ajax calls
 		*  -------------------------------------------------------------*/
@@ -190,6 +213,21 @@ div.footer {
 				  error: function(jqXHR, textStatus, errorThrown){
 					  $("#status").css("color", "red");
 					  $("#status").val(errorThrown + ": "+ jqXHR.responseText);
+				  }
+			});
+		}
+		
+		function sendChargerStackCommand(command){
+			$.ajax({
+				  url: "/RoboServer/dispatch/ChargerStack/"+command,
+				  dataType: "text",
+				  success: function(message){
+					  $("#messages").css("color", "black");
+					  $("#messages").val(message);
+				  },
+				  error: function(jqXHR, textStatus, errorThrown){
+					  $("#messages").css("color", "red");
+					  $("#messages").val(errorThrown + ": "+ jqXHR.responseText);
 				  }
 			});
 		}
@@ -224,8 +262,12 @@ div.footer {
 				});
 		}
 		
-		// initialize RoboStack
-		sendRoboStackCommand("initialize");
+		// initialize RoboStack and Charger Stack
+		sendChargerStackCommand("initialize");
+		window.setTimeout(function(){
+			sendRoboStackCommand("initialize");
+		},10000);
+		
 		// first show robo picture instead of live stream‚
 		$('#webcam').attr('src','img/robo.jpg');
 		$( "#dialog" ).dialog( "open" );
@@ -293,7 +335,8 @@ div.footer {
 			</div>
 			<div>
 				<input id="status" type="text" size="77" readonly="readonly"><button id="updateStatus">Stromverbrauch</button><br>
-				<button id="disconnect">Verbindung beenden</button>
+				<button id="disconnect">Verbindung beenden</button><button id="roboOn">Robo einschalten</button><button id="roboOff">Robo ausschalten</button>
+				<button id="startCharge">Start Laden</button><button id="stopCharge">Stop Laden</button>
 			</div>
 		</div>
 	</div>

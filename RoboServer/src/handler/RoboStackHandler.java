@@ -77,7 +77,7 @@ public class RoboStackHandler extends Handler{
 		masterBrick.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
 		
 		// configure the drive servos (ESC) 
-		servoBrick.setAcceleration(Constants.servo0And1, 40000);
+		servoBrick.setAcceleration(Constants.servo0And1, 50000);
 		
 		// configure the camera servos
 		servoBrick.setVelocity(Constants.servo2And3, 20000);

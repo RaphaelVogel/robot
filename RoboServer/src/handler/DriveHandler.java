@@ -15,7 +15,7 @@ import core.Handler;
 public class DriveHandler extends Handler{
 	private short speed;
 	
-	private final static short SPEED_FACTOR = 900;
+	private final static short SPEED_FACTOR = 1000;
 	
 	public void serve(Action action, HttpServletRequest request, HttpServletResponse response) {
 		// /Drive/<direction>/<speed>
