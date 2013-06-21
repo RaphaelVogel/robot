@@ -44,7 +44,7 @@ public class Loader extends Thread {
 			}
 			startLoading = true;
 			try {
-				sleep(3000);
+				sleep(5000);
 			} catch (InterruptedException e) {
 			}
 		}
