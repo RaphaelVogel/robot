@@ -14,7 +14,7 @@ public class Loader extends Thread {
 	private Logger logger = Logger.getLogger(core.Loader.class.getName());
 	private boolean startLoading = true;
 	private Timer timer = new Timer();
-	private long chargeTime = 1000 * 60 * 90;
+	private long chargeTime = 1000 * 60 * 60;
 	private int count = 0;
 	
 	public void stopLoading(){
