@@ -74,8 +74,6 @@ public class ChargerStackHandler extends Handler{
 		// initialize magnet servo
 		servoBrick.setPulseWidth(Constants.servo0, 800, 2100);
 		servoBrick.setVelocity(Constants.servo0, 20000);
-		servoBrick.setPosition(Constants.servo0, (short)-9000);
-		servoBrick.enable(Constants.servo0);
 		
 		return "Hardware to charger initialized";
 	}
