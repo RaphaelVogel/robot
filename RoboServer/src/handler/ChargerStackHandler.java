@@ -83,7 +83,7 @@ public class ChargerStackHandler extends Handler{
 	@SuppressWarnings("unused")
 	private String roboOff() throws Exception{
 		Dispatcher.getRoboStackHandler().cleanUp();
-		servoBrick.setPosition(Constants.servo0, (short)9000);
+		servoBrick.setPosition(Constants.servo0, (short)6000);
 		servoBrick.enable(Constants.servo0);
 		return "Switched Robo off";
 	}
