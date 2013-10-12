@@ -2,10 +2,15 @@ package httpserver;
 
 import java.util.Map;
 
-public class Server extends NanoHTTPD{
+import com.tinkerforge.IPConnection;
 
-    public Server(String host, int port) {
-        super(host, port);
+public class Server extends NanoHTTPD{
+	
+	IPConnection ipcon;
+
+    public Server(String host, int port, IPConnection ipcon) {
+    	super(host, port);
+    	this.ipcon = ipcon;
     }
 
     @Override

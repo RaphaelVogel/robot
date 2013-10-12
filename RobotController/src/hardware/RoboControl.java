@@ -16,17 +16,6 @@ public class RoboControl {
     private static final int serverport = 8080;
 
 	public static void main(String[] args) {
-		// ----------------------------------------------------------------------
-		// start web server
-		// ----------------------------------------------------------------------
-		final Server server = new Server(serverhost, serverport);
-		try {
-			server.start();
-			System.out.println("Web Server started.....");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		
 		// ----------------------------------------------------------------------
 		// initialize TF hardware
@@ -63,8 +52,20 @@ public class RoboControl {
             } catch(InterruptedException ei) {
             }
         }
-		
+
         
+		// ----------------------------------------------------------------------
+		// start web server
+		// ----------------------------------------------------------------------
+		final Server server = new Server(serverhost, serverport, ipcon);
+		try {
+			server.start();
+			System.out.println("Web Server started.....");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}       
+
+		
         // ---------------------------------------------------------------------
         // On server shutdown
         // ---------------------------------------------------------------------
