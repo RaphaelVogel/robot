@@ -40,10 +40,10 @@ public class TFConfigurator implements EnumerateListener, ConnectedListener {
 			short[] hardwareVersion, short[] firmwareVersion,
 			int deviceIdentifier, short enumerationType) {
 
+		// configure bricks on first connect (ENUMERATION_TYPE_CONNECTED) 
+		// or configure bricks if enumerate was raised externally (ENUMERATION_TYPE_AVAILABLE)
 		if (enumerationType == IPConnection.ENUMERATION_TYPE_CONNECTED
 				|| enumerationType == IPConnection.ENUMERATION_TYPE_AVAILABLE) {
-			// configure bricks on first connect (ENUMERATION_TYPE_CONNECTED) 
-			// or configure bricks if enumerate was raised externally
 			
 			// configure master brick
 			if (deviceIdentifier == BrickMaster.DEVICE_IDENTIFIER) {
