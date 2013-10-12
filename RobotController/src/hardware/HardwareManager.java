@@ -1,17 +1,24 @@
 package hardware;
 
 import com.tinkerforge.BrickMaster;
+import com.tinkerforge.BrickServo;
+import com.tinkerforge.BrickletDualRelay;
+import com.tinkerforge.BrickletIndustrialQuadRelay;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.IPConnection.ConnectedListener;
 import com.tinkerforge.IPConnection.EnumerateListener;
 import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
 
-public class TFConfigurator implements EnumerateListener, ConnectedListener {
+import hardware.Constants;
+
+public class HardwareManager implements EnumerateListener, ConnectedListener {
 	private IPConnection ipcon;
-	private BrickMaster master;
+	private static BrickMaster master;
+	private static BrickServo servo;
+	private static BrickletIndustrialQuadRelay quadRelais;
+	private static BrickletDualRelay dualRelais;
 
-	public TFConfigurator(IPConnection ipcon) {
+	public HardwareManager(IPConnection ipcon) {
 		this.ipcon = ipcon;
 	}
 
@@ -50,15 +57,37 @@ public class TFConfigurator implements EnumerateListener, ConnectedListener {
 				master = new BrickMaster(connectedUid, ipcon);
 				try {
 					master.setWifiPowerMode(BrickMaster.WIFI_POWER_MODE_LOW_POWER);
-				} catch (TimeoutException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NotConnectedException e) {
-					// TODO Auto-generated catch block
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+			
+			// configure servo brick
+			if(deviceIdentifier == BrickServo.DEVICE_IDENTIFIER){
+				servo = new BrickServo(connectedUid, ipcon);
+				try {
+					// configure the drive servos (ESC) 
+					servo.setAcceleration(Constants.servo0And1, 50000);
+					// configure the camera servos
+					servo.setVelocity(Constants.servo2And3, 20000);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
-
+	
+	public static BrickMaster getMasterBrick(){
+		return master;
+	}
+	public static BrickServo getServoBrick(){
+		return servo;
+	}
+	public static BrickletIndustrialQuadRelay getQuadRelais(){
+		return quadRelais;
+	}
+	public static BrickletDualRelay getDualRelais(){
+		return dualRelais;
+	}
 }

@@ -10,7 +10,7 @@ public class RoboControl {
     private static final String robohost = "robo";
     private static final int roboport = 4223;
     private static final IPConnection ipcon = new IPConnection();
-    private static TFConfigurator tfConfigurator;
+    private static HardwareManager hardwareManager;
     
     private static final String serverhost = "localhost";
     private static final int serverport = 8080;
@@ -34,9 +34,9 @@ public class RoboControl {
             }
         }
 		
-        tfConfigurator = new TFConfigurator(ipcon);
-        ipcon.addEnumerateListener(tfConfigurator);
-        ipcon.addConnectedListener(tfConfigurator);
+        hardwareManager = new HardwareManager(ipcon);
+        ipcon.addEnumerateListener(hardwareManager);
+        ipcon.addConnectedListener(hardwareManager);
         
         
         while(true) {
@@ -73,6 +73,7 @@ public class RoboControl {
 			public void run(){
 				server.stop();
 				try {
+					
 					ipcon.disconnect();
 				} catch (NotConnectedException e) {
 					e.printStackTrace();
