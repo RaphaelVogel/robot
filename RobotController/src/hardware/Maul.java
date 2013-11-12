@@ -8,9 +8,7 @@ import com.tinkerforge.BrickletDistanceIR;
 import com.tinkerforge.BrickletDistanceIR.DistanceReachedListener;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.IPConnection.ConnectedListener;
-import com.tinkerforge.IPConnection.EnumerateListener;
 import com.tinkerforge.NotConnectedException;
-import com.tinkerforge.TimeoutException;
 
 public class Maul implements ConnectedListener, DistanceReachedListener{
     private final String host = "charger";
@@ -33,7 +31,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
             	e.printStackTrace();
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch(InterruptedException ei) {
             }
         }
@@ -52,6 +50,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Connected to Master....");
 	}
 
     
@@ -74,7 +73,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
     	this.thresholdSet = true;
     	try {
     		ir.addDistanceReachedListener(this);
-    		ir.setDebouncePeriod(3000);
+    		ir.setDebouncePeriod(2000);
 			ir.setDistanceCallbackThreshold('<', (short)(threshold), (short)0);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,7 +86,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
     	final Maul maul = new Maul();
 		maul.initialize();
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 			System.out.println("Hardware initialized.....");
 			int currentDistance = maul.getIR().getDistance();
 			System.out.println("Current distance: "+ currentDistance+ " mm");
