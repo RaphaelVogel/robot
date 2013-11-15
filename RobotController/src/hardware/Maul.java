@@ -1,7 +1,11 @@
 package hardware;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import com.tinkerforge.BrickMaster;
 import com.tinkerforge.BrickletDistanceIR;
@@ -57,6 +61,18 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
 	@Override
 	public void distanceReached(int distance) {
 		System.out.println("Threshold reached; was "+threshold+ "; new distance: "+distance);
+	    try
+	    {
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(AudioSystem.getAudioInputStream(new File("src/A3.WAV")));
+	        clip.start();
+	    }
+	    catch (Exception exc)
+	    {
+	        exc.printStackTrace(System.out);
+	    }
+	    
+	    
 	}
     
     
@@ -73,7 +89,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
     	this.thresholdSet = true;
     	try {
     		ir.addDistanceReachedListener(this);
-    		ir.setDebouncePeriod(2000);
+    		ir.setDebouncePeriod(3000);
 			ir.setDistanceCallbackThreshold('<', (short)(threshold), (short)0);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,6 +105,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
 			Thread.sleep(2000);
 			System.out.println("Hardware initialized.....");
 			int currentDistance = maul.getIR().getDistance();
+			
 			System.out.println("Current distance: "+ currentDistance+ " mm");
 			int threshold = currentDistance - 10;
 			System.out.println("Setting treshhold to: "+threshold + " mm");
