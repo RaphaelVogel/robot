@@ -64,7 +64,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
 	    try
 	    {
 	        Clip clip = AudioSystem.getClip();
-	        clip.open(AudioSystem.getAudioInputStream(new File("src/A3.WAV")));
+	        clip.open(AudioSystem.getAudioInputStream(new File("A3.WAV")));
 	        clip.start();
 	    }
 	    catch (Exception exc)
