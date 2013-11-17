@@ -89,7 +89,7 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
     	this.thresholdSet = true;
     	try {
     		ir.addDistanceReachedListener(this);
-    		ir.setDebouncePeriod(3000);
+    		ir.setDebouncePeriod(2000);
 			ir.setDistanceCallbackThreshold('<', (short)(threshold), (short)0);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,29 +103,41 @@ public class Maul implements ConnectedListener, DistanceReachedListener{
 		maul.initialize();
 		try {
 			Thread.sleep(2000);
+			Runtime.getRuntime().addShutdownHook(new Thread(){
+				public void run(){
+					try {
+						maul.getIPConnection().disconnect();
+					} catch (NotConnectedException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
 			System.out.println("Hardware initialized.....");
+			
 			int currentDistance = maul.getIR().getDistance();
 			
-			System.out.println("Current distance: "+ currentDistance+ " mm");
-			int threshold = currentDistance - 10;
-			System.out.println("Setting treshhold to: "+threshold + " mm");
-			maul.initDistanceIR((short)threshold);
-			
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-			bufferedReader.readLine();
+			if(args[0] != null && "distance".equals(args[0])){
+				while(true){
+					currentDistance = maul.getIR().getDistance();
+					System.out.println("Current distance: "+ currentDistance+ " mm");
+					Thread.sleep(2000);
+				}
+			} else{
+				System.out.println("Current distance: "+ currentDistance+ " mm");
+				int threshold = currentDistance - 10;
+				System.out.println("Setting treshhold to: "+threshold + " mm");
+				maul.initDistanceIR((short)threshold);
+				
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+				bufferedReader.readLine();
+			}
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		Runtime.getRuntime().addShutdownHook(new Thread(){
-			public void run(){
-				try {
-					maul.getIPConnection().disconnect();
-				} catch (NotConnectedException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+
     }
 }
